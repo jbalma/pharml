@@ -1,0 +1,2 @@
+# pharml
+PharML is a framework for predicting compound affinity for protein structures. It utilizes a novel Molecular-Highway Graph Neural Network (MH-GNN) architecture based on state-of-the-art techniques in deep learning. This repository contains the visualization, preprocessing, training, and inference code written in Python and C. In addition, we provide an ensemble of pre-trained models which can readily be used for quickly generating rank-ordered predictions of compound affinity relative to a given target. 
