@@ -1,4 +1,4 @@
-# pharml
+# PharML
 PharML is a framework for predicting compound affinity for protein structures. It utilizes a novel Molecular-Highway Graph Neural Network (MH-GNN) architecture based on state-of-the-art techniques in deep learning. This repository contains the visualization, preprocessing, training, and inference code written in Python and C. In addition, we provide an ensemble of pre-trained models which can readily be used for quickly generating rank-ordered predictions of compound affinity relative to a given target. 
 
 Setup
@@ -33,6 +33,9 @@ Setup
         -> data/pdb: the raw pdb files used to generate ligands and NHG
         -> data/map: the map file used for inference that specifies the ligand-to-target tests which will be tested
 
+
+Running
+==============================
 
 4) Test Inference Across example map file
 
@@ -102,10 +105,19 @@ Setup
     -> When inference finishes over all ensemble members, you will find the results stored to disk (if --inference_out was set) in the pharml/results/${MAP_TEST_NAME} directory
 
 
+Evaluate and Visualize
+==============================
+
 6) Evaluate the results
 
     -> Using the scripts provided in pharml/results, we can evaluate the rank-ordered compound set generated in the previous step
 
-    -> Using mlvoxelizer, we can visualize the compounds relative the target structure
+    "[TODO: provide example of using the ensemble summary tool]"
+
+7) Visualize the target with predicted compounds
+
+    -> Using mlvoxelizer, we can visualize the compounds, proteins, or both relative to one another (when active-site training was used)
+
+    "[TODO: Fill in an example of using mlvoxelizer for visualization of a covid-19 structure]"
 
 
