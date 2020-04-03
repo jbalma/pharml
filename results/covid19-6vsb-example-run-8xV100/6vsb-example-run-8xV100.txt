@@ -1,0 +1,821 @@
+Starting COVID-19 Structure Inference: 6VSB, 6LZG, 6LU7 for ensemble member 3...
+========================================================================================
+--> 6LZG: Spike receptor-binding domain complexed with its receptor ACE2: https://www.rcsb.org/structure/6LZG
+--> 6VSB: Prefusion 2019-nCoV spike glycoprotein with a single receptor-binding domain up: https://www.rcsb.org/structure/6vsb
+--> 6LU7: The crystal structure of COVID-19 main protease in complex with an inhibitor N3: https://www.rcsb.org/structure/6LU7
+--> Starting at: Thu Apr  2 20:25:48 CDT 2020
+0: 0 Killing MPS...
+0: 0 Done KILL
+0:
+0: 0 Restarting MPS...
+0: Warning: Failed writing log files to directory [/var/log/nvidia-mps]. No logs will be available.
+0: 0 Done RESTART
+
+real    0m5.669s
+user    0m0.010s
+sys     0m0.019s
+1: WARNING:tensorflow:From mldock_gnn.py:57: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+1:
+7: WARNING:tensorflow:From mldock_gnn.py:57: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+7:
+2: WARNING:tensorflow:From mldock_gnn.py:57: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+2:
+4: WARNING:tensorflow:From mldock_gnn.py:57: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+4:
+5: WARNING:tensorflow:From mldock_gnn.py:57: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+5:
+1: Namespace(batch_size=16, batch_size_test=16, data_threads=4, debug=True, epochs=1, gnn_layers='5,5', hvd=True, inference_only=True, inference_out='covid19_inference.map', lr_init=0.01, map_test='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-bindingdb.map', map_train='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-fda.map', mlp_latent='32,32', mlp_layers='2,2', mode='classification', num_features='16,16', plot_history=False, restore='/lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt', use_clr=False, use_fp16=False)
+1: Starting horovod...
+3: WARNING:tensorflow:From mldock_gnn.py:57: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+3:
+2: Namespace(batch_size=16, batch_size_test=16, data_threads=4, debug=True, epochs=1, gnn_layers='5,5', hvd=True, inference_only=True, inference_out='covid19_inference.map', lr_init=0.01, map_test='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-bindingdb.map', map_train='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-fda.map', mlp_latent='32,32', mlp_layers='2,2', mode='classification', num_features='16,16', plot_history=False, restore='/lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt', use_clr=False, use_fp16=False)
+2: Starting horovod...
+7: Namespace(batch_size=16, batch_size_test=16, data_threads=4, debug=True, epochs=1, gnn_layers='5,5', hvd=True, inference_only=True, inference_out='covid19_inference.map', lr_init=0.01, map_test='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-bindingdb.map', map_train='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-fda.map', mlp_latent='32,32', mlp_layers='2,2', mode='classification', num_features='16,16', plot_history=False, restore='/lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt', use_clr=False, use_fp16=False)
+7: Starting horovod...
+0: WARNING:tensorflow:From mldock_gnn.py:57: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+0:
+6: WARNING:tensorflow:From mldock_gnn.py:57: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+6:
+4: Namespace(batch_size=16, batch_size_test=16, data_threads=4, debug=True, epochs=1, gnn_layers='5,5', hvd=True, inference_only=True, inference_out='covid19_inference.map', lr_init=0.01, map_test='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-bindingdb.map', map_train='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-fda.map', mlp_latent='32,32', mlp_layers='2,2', mode='classification', num_features='16,16', plot_history=False, restore='/lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt', use_clr=False, use_fp16=False)
+4: Starting horovod...
+5: Namespace(batch_size=16, batch_size_test=16, data_threads=4, debug=True, epochs=1, gnn_layers='5,5', hvd=True, inference_only=True, inference_out='covid19_inference.map', lr_init=0.01, map_test='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-bindingdb.map', map_train='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-fda.map', mlp_latent='32,32', mlp_layers='2,2', mode='classification', num_features='16,16', plot_history=False, restore='/lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt', use_clr=False, use_fp16=False)
+5: Starting horovod...
+3: Namespace(batch_size=16, batch_size_test=16, data_threads=4, debug=True, epochs=1, gnn_layers='5,5', hvd=True, inference_only=True, inference_out='covid19_inference.map', lr_init=0.01, map_test='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-bindingdb.map', map_train='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-fda.map', mlp_latent='32,32', mlp_layers='2,2', mode='classification', num_features='16,16', plot_history=False, restore='/lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt', use_clr=False, use_fp16=False)
+3: Starting horovod...
+0: Namespace(batch_size=16, batch_size_test=16, data_threads=4, debug=True, epochs=1, gnn_layers='5,5', hvd=True, inference_only=True, inference_out='covid19_inference.map', lr_init=0.01, map_test='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-bindingdb.map', map_train='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-fda.map', mlp_latent='32,32', mlp_layers='2,2', mode='classification', num_features='16,16', plot_history=False, restore='/lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt', use_clr=False, use_fp16=False)
+0: Starting horovod...
+6: Namespace(batch_size=16, batch_size_test=16, data_threads=4, debug=True, epochs=1, gnn_layers='5,5', hvd=True, inference_only=True, inference_out='covid19_inference.map', lr_init=0.01, map_test='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-bindingdb.map', map_train='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-fda.map', mlp_latent='32,32', mlp_layers='2,2', mode='classification', num_features='16,16', plot_history=False, restore='/lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt', use_clr=False, use_fp16=False)
+6: Starting horovod...
+3: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:152: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+3:
+3: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:178: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+3:
+5: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:152: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+5:
+4: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:152: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+4:
+5: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:178: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+5:
+4: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:178: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+4:
+7: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:152: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+7:
+1: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:152: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+1:
+7: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:178: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+7:
+1: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:178: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+1:
+0: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:152: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+0:
+0: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:178: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+0:
+2: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:152: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+2:
+2: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:178: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+2:
+6: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:152: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+6:
+6: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/horovod/tensorflow/__init__.py:178: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+6:
+5: Initialization of horovod complete...
+7: Initialization of horovod complete...
+7: Rank 7  is saving inference output to covid19_inference_7.map
+3: Initialization of horovod complete...
+3: Rank 3  is saving inference output to covid19_inference_3.map
+4: Initialization of horovod complete...
+4: Rank 4  is saving inference output to covid19_inference_4.map
+5: Rank 5  is saving inference output to covid19_inference_5.map
+2: Initialization of horovod complete...
+2: Rank 2  is saving inference output to covid19_inference_2.map
+6: Initialization of horovod complete...
+6: Rank 6  is saving inference output to covid19_inference_6.map
+0: Initialization of horovod complete...
+1: Initialization of horovod complete...
+0: Rank 0  is saving inference output to covid19_inference_0.map
+1: Rank 1  is saving inference output to covid19_inference_1.map
+0: ----------------------------------------
+0: PharML-GNN
+0: ----------------------------------------
+0: Namespace(batch_size=16, batch_size_test=16, data_threads=4, debug=True, epochs=1, gnn_layers='5,5', hvd=True, inference_only=True, inference_out='covid19_inference.map', lr_init=0.01, map_test='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-bindingdb.map', map_train='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-fda.map', mlp_latent='32,32', mlp_layers='2,2', mode='classification', num_features='16,16', plot_history=False, restore='/lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt', use_clr=False, use_fp16=False)
+0: ----------------------------------------
+0: Loading data.
+0: ----------------------------------------
+0: Loading map file as distributed dataset for 8 ranks:
+0:   Map file:          /lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-fda.map
+0:   Map items:         952
+0:   Worker chunk size: 119
+0:   Number of items:   119
+0:   Sum(target[0]):    58.000000
+0:   Avg(target[0]):    0.487395
+0:   Total load time:   0.0
+0: Done processing map file.
+0: Loading map file as distributed dataset for 8 ranks:
+0:   Map file:          /lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/6vsb-bindingdb.map
+0:   Map items:         315568
+0:   Worker chunk size: 39446
+0:   Number of items:   39446
+0:   Sum(target[0]):    39446.000000
+0:   Avg(target[0]):    1.000000
+0:   Total load time:   2.7
+0: Done processing map file.
+2: WARNING:tensorflow:From mldock_gnn.py:323: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+2:
+2: WARNING:tensorflow:
+2: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+2: For more information, please see:
+2:   * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+2:   * https://github.com/tensorflow/addons
+2:   * https://github.com/tensorflow/io (for I/O related ops)
+2: If you depend on functionality not listed there, please file an issue.
+2:
+2: gnn_model_protein_core0: [32, 7]
+2: gnn_model_protein_core1: [40, 9]
+2: gnn_model_protein_core2: [48, 29, 48]
+5: WARNING:tensorflow:From mldock_gnn.py:323: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+5:
+5: WARNING:tensorflow:
+5: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+5: For more information, please see:
+5:   * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+5:   * https://github.com/tensorflow/addons
+5:   * https://github.com/tensorflow/io (for I/O related ops)
+5: If you depend on functionality not listed there, please file an issue.
+5:
+2: gnn_model_protein_core3: [56, 41, 27, 56]
+2: gnn_model_protein_core4: [64, 51, 39, 51, 64]
+5: gnn_model_protein_core0: [32, 7]
+7: WARNING:tensorflow:From mldock_gnn.py:323: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+7:
+5: gnn_model_protein_core1: [40, 9]
+7: WARNING:tensorflow:
+7: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+7: For more information, please see:
+7:   * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+7:   * https://github.com/tensorflow/addons
+7:   * https://github.com/tensorflow/io (for I/O related ops)
+7: If you depend on functionality not listed there, please file an issue.
+7:
+5: gnn_model_protein_core2: [48, 29, 48]
+7: gnn_model_protein_core0: [32, 7]
+0: ----------------------------------------
+0: Building model.
+0: ----------------------------------------
+0: WARNING:tensorflow:From mldock_gnn.py:323: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+0:
+5: gnn_model_protein_core3: [56, 41, 27, 56]
+2: gnn_model_ligand_core0: [32, 7]
+0: WARNING:tensorflow:
+0: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+0: For more information, please see:
+0:   * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+0:   * https://github.com/tensorflow/addons
+0:   * https://github.com/tensorflow/io (for I/O related ops)
+0: If you depend on functionality not listed there, please file an issue.
+0:
+7: gnn_model_protein_core1: [40, 9]
+2: gnn_model_ligand_core1: [40, 9]
+5: gnn_model_protein_core4: [64, 51, 39, 51, 64]
+0: gnn_model_protein_core0: [32, 7]
+7: gnn_model_protein_core2: [48, 29, 48]
+2: gnn_model_ligand_core2: [48, 29, 48]
+0: gnn_model_protein_core1: [40, 9]
+7: gnn_model_protein_core3: [56, 41, 27, 56]
+2: gnn_model_ligand_core3: [56, 41, 27, 56]
+0: gnn_model_protein_core2: [48, 29, 48]
+7: gnn_model_protein_core4: [64, 51, 39, 51, 64]
+2: gnn_model_ligand_core4: [64, 51, 39, 51, 64]
+0: gnn_model_protein_core3: [56, 41, 27, 56]
+5: gnn_model_ligand_core0: [32, 7]
+0: gnn_model_protein_core4: [64, 51, 39, 51, 64]
+5: gnn_model_ligand_core1: [40, 9]
+5: gnn_model_ligand_core2: [48, 29, 48]
+7: gnn_model_ligand_core0: [32, 7]
+6: WARNING:tensorflow:From mldock_gnn.py:323: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+6:
+6: WARNING:tensorflow:
+6: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+6: For more information, please see:
+6:   * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+6:   * https://github.com/tensorflow/addons
+6:   * https://github.com/tensorflow/io (for I/O related ops)
+6: If you depend on functionality not listed there, please file an issue.
+6:
+5: gnn_model_ligand_core3: [56, 41, 27, 56]
+7: gnn_model_ligand_core1: [40, 9]
+0: gnn_model_ligand_core0: [32, 7]
+7: gnn_model_ligand_core2: [48, 29, 48]
+6: gnn_model_protein_core0: [32, 7]
+5: gnn_model_ligand_core4: [64, 51, 39, 51, 64]
+3: WARNING:tensorflow:From mldock_gnn.py:323: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+3:
+0: gnn_model_ligand_core1: [40, 9]
+1: WARNING:tensorflow:From mldock_gnn.py:323: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+1:
+3: WARNING:tensorflow:
+3: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+3: For more information, please see:
+3:   * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+3:   * https://github.com/tensorflow/addons
+3:   * https://github.com/tensorflow/io (for I/O related ops)
+3: If you depend on functionality not listed there, please file an issue.
+3:
+7: gnn_model_ligand_core3: [56, 41, 27, 56]
+6: gnn_model_protein_core1: [40, 9]
+1: WARNING:tensorflow:
+1: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+1: For more information, please see:
+1:   * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+1:   * https://github.com/tensorflow/addons
+1:   * https://github.com/tensorflow/io (for I/O related ops)
+1: If you depend on functionality not listed there, please file an issue.
+1:
+0: gnn_model_ligand_core2: [48, 29, 48]
+2: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/tensorflow_core/python/ops/array_ops.py:1475: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+2: Instructions for updating:
+2: Use tf.where in 2.0, which has the same broadcast rule as np.where
+3: gnn_model_protein_core0: [32, 7]
+6: gnn_model_protein_core2: [48, 29, 48]
+7: gnn_model_ligand_core4: [64, 51, 39, 51, 64]
+2: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/graph_nets/utils_tf.py:192: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+2:
+1: gnn_model_protein_core0: [32, 7]
+0: gnn_model_ligand_core3: [56, 41, 27, 56]
+3: gnn_model_protein_core1: [40, 9]
+6: gnn_model_protein_core3: [56, 41, 27, 56]
+1: gnn_model_protein_core1: [40, 9]
+0: gnn_model_ligand_core4: [64, 51, 39, 51, 64]
+3: gnn_model_protein_core2: [48, 29, 48]
+6: gnn_model_protein_core4: [64, 51, 39, 51, 64]
+1: gnn_model_protein_core2: [48, 29, 48]
+3: gnn_model_protein_core3: [56, 41, 27, 56]
+1: gnn_model_protein_core3: [56, 41, 27, 56]
+3: gnn_model_protein_core4: [64, 51, 39, 51, 64]
+1: gnn_model_protein_core4: [64, 51, 39, 51, 64]
+5: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/tensorflow_core/python/ops/array_ops.py:1475: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+5: Instructions for updating:
+5: Use tf.where in 2.0, which has the same broadcast rule as np.where
+5: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/graph_nets/utils_tf.py:192: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+5:
+6: gnn_model_ligand_core0: [32, 7]
+6: gnn_model_ligand_core1: [40, 9]
+7: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/tensorflow_core/python/ops/array_ops.py:1475: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+7: Instructions for updating:
+7: Use tf.where in 2.0, which has the same broadcast rule as np.where
+4: WARNING:tensorflow:From mldock_gnn.py:323: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+4:
+7: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/graph_nets/utils_tf.py:192: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+7:
+6: gnn_model_ligand_core2: [48, 29, 48]
+3: gnn_model_ligand_core0: [32, 7]
+4: WARNING:tensorflow:
+4: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+4: For more information, please see:
+4:   * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+4:   * https://github.com/tensorflow/addons
+4:   * https://github.com/tensorflow/io (for I/O related ops)
+4: If you depend on functionality not listed there, please file an issue.
+4:
+1: gnn_model_ligand_core0: [32, 7]
+6: gnn_model_ligand_core3: [56, 41, 27, 56]
+0: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/tensorflow_core/python/ops/array_ops.py:1475: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+0: Instructions for updating:
+0: Use tf.where in 2.0, which has the same broadcast rule as np.where
+3: gnn_model_ligand_core1: [40, 9]
+0: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/graph_nets/utils_tf.py:192: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+0:
+1: gnn_model_ligand_core1: [40, 9]
+4: gnn_model_protein_core0: [32, 7]
+6: gnn_model_ligand_core4: [64, 51, 39, 51, 64]
+3: gnn_model_ligand_core2: [48, 29, 48]
+1: gnn_model_ligand_core2: [48, 29, 48]
+4: gnn_model_protein_core1: [40, 9]
+3: gnn_model_ligand_core3: [56, 41, 27, 56]
+1: gnn_model_ligand_core3: [56, 41, 27, 56]
+4: gnn_model_protein_core2: [48, 29, 48]
+3: gnn_model_ligand_core4: [64, 51, 39, 51, 64]
+1: gnn_model_ligand_core4: [64, 51, 39, 51, 64]
+4: gnn_model_protein_core3: [56, 41, 27, 56]
+4: gnn_model_protein_core4: [64, 51, 39, 51, 64]
+0: Input protein placeholder =  GraphsTuple(nodes=<tf.Tensor 'placeholders_from_data_dicts/nodes:0' shape=(?, 1) dtype=float32>, edges=<tf.Tensor 'placeholders_from_data_dicts/edges:0' shape=(?, 1) dtype=float32>, receivers=<tf.Tensor 'placeholders_from_data_dicts/receivers:0' shape=(?,) dtype=int32>, senders=<tf.Tensor 'placeholders_from_data_dicts/senders:0' shape=(?,) dtype=int32>, globals=<tf.Tensor 'placeholders_from_data_dicts/globals:0' shape=(?, 1) dtype=float32>, n_node=<tf.Tensor 'placeholders_from_data_dicts/n_node:0' shape=(?,) dtype=int32>, n_edge=<tf.Tensor 'placeholders_from_data_dicts/n_edge:0' shape=(?,) dtype=int32>)
+0: Input ligand placeholder =  GraphsTuple(nodes=<tf.Tensor 'placeholders_from_data_dicts_1/nodes:0' shape=(?, 2) dtype=float32>, edges=<tf.Tensor 'placeholders_from_data_dicts_1/edges:0' shape=(?, 1) dtype=float32>, receivers=<tf.Tensor 'placeholders_from_data_dicts_1/receivers:0' shape=(?,) dtype=int32>, senders=<tf.Tensor 'placeholders_from_data_dicts_1/senders:0' shape=(?,) dtype=int32>, globals=<tf.Tensor 'placeholders_from_data_dicts_1/globals:0' shape=(?, 1) dtype=float32>, n_node=<tf.Tensor 'placeholders_from_data_dicts_1/n_node:0' shape=(?,) dtype=int32>, n_edge=<tf.Tensor 'placeholders_from_data_dicts_1/n_edge:0' shape=(?,) dtype=int32>)
+0: Target placeholder =  GraphsTuple(nodes=None, edges=None, receivers=None, senders=None, globals=<tf.Tensor 'placeholders_from_data_dicts_2/globals:0' shape=(?, 2) dtype=float32>, n_node=<tf.Tensor 'placeholders_from_data_dicts_2/n_node:0' shape=(?,) dtype=int32>, n_edge=<tf.Tensor 'placeholders_from_data_dicts_2/n_edge:0' shape=(?,) dtype=int32>)
+4: gnn_model_ligand_core0: [32, 7]
+6: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/tensorflow_core/python/ops/array_ops.py:1475: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+6: Instructions for updating:
+6: Use tf.where in 2.0, which has the same broadcast rule as np.where
+4: gnn_model_ligand_core1: [40, 9]
+6: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/graph_nets/utils_tf.py:192: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+6:
+4: gnn_model_ligand_core2: [48, 29, 48]
+3: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/tensorflow_core/python/ops/array_ops.py:1475: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+3: Instructions for updating:
+3: Use tf.where in 2.0, which has the same broadcast rule as np.where
+1: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/tensorflow_core/python/ops/array_ops.py:1475: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+1: Instructions for updating:
+1: Use tf.where in 2.0, which has the same broadcast rule as np.where
+3: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/graph_nets/utils_tf.py:192: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+3:
+1: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/graph_nets/utils_tf.py:192: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+1:
+4: gnn_model_ligand_core3: [56, 41, 27, 56]
+4: gnn_model_ligand_core4: [64, 51, 39, 51, 64]
+4: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/tensorflow_core/python/ops/array_ops.py:1475: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+4: Instructions for updating:
+4: Use tf.where in 2.0, which has the same broadcast rule as np.where
+4: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/graph_nets/utils_tf.py:192: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+4:
+2: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:127: calling TruncatedNormal.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+2: Instructions for updating:
+2: Call initializer instance with the dtype argument instead of passing it to the constructor
+2: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:132: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+2: Instructions for updating:
+2: Call initializer instance with the dtype argument instead of passing it to the constructor
+5: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:127: calling TruncatedNormal.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+5: Instructions for updating:
+5: Call initializer instance with the dtype argument instead of passing it to the constructor
+5: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:132: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+5: Instructions for updating:
+5: Call initializer instance with the dtype argument instead of passing it to the constructor
+7: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:127: calling TruncatedNormal.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+7: Instructions for updating:
+7: Call initializer instance with the dtype argument instead of passing it to the constructor
+7: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:132: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+7: Instructions for updating:
+7: Call initializer instance with the dtype argument instead of passing it to the constructor
+6: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:127: calling TruncatedNormal.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+6: Instructions for updating:
+6: Call initializer instance with the dtype argument instead of passing it to the constructor
+6: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:132: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+6: Instructions for updating:
+6: Call initializer instance with the dtype argument instead of passing it to the constructor
+3: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:127: calling TruncatedNormal.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+3: Instructions for updating:
+3: Call initializer instance with the dtype argument instead of passing it to the constructor
+3: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:132: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+3: Instructions for updating:
+3: Call initializer instance with the dtype argument instead of passing it to the constructor
+1: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:127: calling TruncatedNormal.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+1: Instructions for updating:
+1: Call initializer instance with the dtype argument instead of passing it to the constructor
+1: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:132: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+1: Instructions for updating:
+1: Call initializer instance with the dtype argument instead of passing it to the constructor
+0: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:127: calling TruncatedNormal.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+0: Instructions for updating:
+0: Call initializer instance with the dtype argument instead of passing it to the constructor
+0: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:132: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+0: Instructions for updating:
+0: Call initializer instance with the dtype argument instead of passing it to the constructor
+4: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:127: calling TruncatedNormal.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+4: Instructions for updating:
+4: Call initializer instance with the dtype argument instead of passing it to the constructor
+4: WARNING:tensorflow:From /lus/scratch/jbalma/condenv-cuda10-pharml/lib/python3.6/site-packages/sonnet/python/modules/basic.py:132: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+4: Instructions for updating:
+4: Call initializer instance with the dtype argument instead of passing it to the constructor
+5: WARNING:tensorflow:From mldock_gnn.py:361: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+5: Instructions for updating:
+5: Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+5: WARNING:tensorflow:From mldock_gnn.py:363: The name tf.losses.softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.softmax_cross_entropy instead.
+5:
+2: WARNING:tensorflow:From mldock_gnn.py:361: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+2: Instructions for updating:
+2: Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+5: WARNING:tensorflow:From mldock_gnn.py:409: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+5:
+5: Successfully created directory ./checkpoints_test.
+5: WARNING:tensorflow:From mldock_gnn.py:424: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+5:
+5: 2020-04-02 20:26:08.612604: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+5: 2020-04-02 20:26:08.636180: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2299955000 Hz
+2: WARNING:tensorflow:From mldock_gnn.py:363: The name tf.losses.softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.softmax_cross_entropy instead.
+2:
+5: 2020-04-02 20:26:08.645356: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55e238316660 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+5: 2020-04-02 20:26:08.645384: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+5: 2020-04-02 20:26:08.650980: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2: WARNING:tensorflow:From mldock_gnn.py:409: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+2:
+2: Creation of directory ./checkpoints_test failed!
+2: WARNING:tensorflow:From mldock_gnn.py:424: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+2:
+2: 2020-04-02 20:26:08.678419: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+6: WARNING:tensorflow:From mldock_gnn.py:361: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+6: Instructions for updating:
+6: Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+2: 2020-04-02 20:26:08.695918: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2299955000 Hz
+2: 2020-04-02 20:26:08.704371: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x559a69f9f570 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2: 2020-04-02 20:26:08.704406: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2: 2020-04-02 20:26:08.709448: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+6: WARNING:tensorflow:From mldock_gnn.py:363: The name tf.losses.softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.softmax_cross_entropy instead.
+6:
+6: WARNING:tensorflow:From mldock_gnn.py:409: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+6:
+6: Creation of directory ./checkpoints_test failed!
+6: WARNING:tensorflow:From mldock_gnn.py:424: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+6:
+6: 2020-04-02 20:26:08.766804: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+7: WARNING:tensorflow:From mldock_gnn.py:361: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+7: Instructions for updating:
+7: Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+6: 2020-04-02 20:26:08.787736: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2299955000 Hz
+6: 2020-04-02 20:26:08.796372: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x56550f6f5bd0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+6: 2020-04-02 20:26:08.796396: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+6: 2020-04-02 20:26:08.802338: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+0: WARNING:tensorflow:From mldock_gnn.py:361: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+0: Instructions for updating:
+0: Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+7: WARNING:tensorflow:From mldock_gnn.py:363: The name tf.losses.softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.softmax_cross_entropy instead.
+7:
+4: WARNING:tensorflow:From mldock_gnn.py:361: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+4: Instructions for updating:
+4: Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+3: WARNING:tensorflow:From mldock_gnn.py:361: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+3: Instructions for updating:
+3: Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+7: WARNING:tensorflow:From mldock_gnn.py:409: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+7:
+7: Creation of directory ./checkpoints_test failed!
+7: WARNING:tensorflow:From mldock_gnn.py:424: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+7:
+7: 2020-04-02 20:26:08.877037: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+0: WARNING:tensorflow:From mldock_gnn.py:363: The name tf.losses.softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.softmax_cross_entropy instead.
+0:
+7: 2020-04-02 20:26:08.895262: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2299955000 Hz
+4: WARNING:tensorflow:From mldock_gnn.py:363: The name tf.losses.softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.softmax_cross_entropy instead.
+4:
+7: 2020-04-02 20:26:08.903828: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55f3823d3330 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+7: 2020-04-02 20:26:08.903867: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+7: 2020-04-02 20:26:08.908884: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+0: ----------------------------------------
+0: Create TF config / session.
+0: ----------------------------------------
+0: WARNING:tensorflow:From mldock_gnn.py:409: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+0:
+0: Successfully created directory ./checkpoints.
+0: WARNING:tensorflow:From mldock_gnn.py:424: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+0:
+0: 2020-04-02 20:26:08.917158: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+1: WARNING:tensorflow:From mldock_gnn.py:361: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+1: Instructions for updating:
+1: Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+3: WARNING:tensorflow:From mldock_gnn.py:363: The name tf.losses.softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.softmax_cross_entropy instead.
+3:
+0: 2020-04-02 20:26:08.936511: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2299955000 Hz
+4: WARNING:tensorflow:From mldock_gnn.py:409: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+4:
+4: Creation of directory ./checkpoints_test failed!
+4: WARNING:tensorflow:From mldock_gnn.py:424: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+4:
+4: 2020-04-02 20:26:08.937764: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+0: 2020-04-02 20:26:08.945332: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x56391385cff0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+0: 2020-04-02 20:26:08.945362: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+0: 2020-04-02 20:26:08.950658: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+3: WARNING:tensorflow:From mldock_gnn.py:409: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+3:
+4: 2020-04-02 20:26:08.957667: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2299955000 Hz
+3: Creation of directory ./checkpoints_test failed!
+3: WARNING:tensorflow:From mldock_gnn.py:424: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+3:
+3: 2020-04-02 20:26:08.959296: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+4: 2020-04-02 20:26:08.966989: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5557a4376540 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+4: 2020-04-02 20:26:08.967023: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+4: 2020-04-02 20:26:08.972456: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+3: 2020-04-02 20:26:08.978825: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2299955000 Hz
+1: WARNING:tensorflow:From mldock_gnn.py:363: The name tf.losses.softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.softmax_cross_entropy instead.
+1:
+3: 2020-04-02 20:26:08.987944: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5571be8c2570 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+3: 2020-04-02 20:26:08.987982: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+3: 2020-04-02 20:26:08.992842: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+1: WARNING:tensorflow:From mldock_gnn.py:409: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+1:
+1: Creation of directory ./checkpoints_test failed!
+1: WARNING:tensorflow:From mldock_gnn.py:424: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+1:
+1: 2020-04-02 20:26:09.026838: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+1: 2020-04-02 20:26:09.045129: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2299955000 Hz
+1: 2020-04-02 20:26:09.053989: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x56194babb2f0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+1: 2020-04-02 20:26:09.054012: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+1: 2020-04-02 20:26:09.058861: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+5: 2020-04-02 20:26:11.680037: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55e23840f5a0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+5: 2020-04-02 20:26:11.680097: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-16GB, Compute Capability 7.0
+2: 2020-04-02 20:26:11.688823: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x559a6a0984e0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2: 2020-04-02 20:26:11.688876: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-16GB, Compute Capability 7.0
+5: 2020-04-02 20:26:11.701343: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+5: name: Tesla V100-SXM2-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+5: pciBusID: 0000:8d:00.0
+2: 2020-04-02 20:26:11.706286: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+2: name: Tesla V100-SXM2-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+2: pciBusID: 0000:09:00.0
+2: 2020-04-02 20:26:11.709563: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+5: 2020-04-02 20:26:11.709548: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2: 2020-04-02 20:26:11.713084: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+5: 2020-04-02 20:26:11.713168: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2: 2020-04-02 20:26:11.715838: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+5: 2020-04-02 20:26:11.716375: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2: 2020-04-02 20:26:11.716659: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+5: 2020-04-02 20:26:11.717117: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2: 2020-04-02 20:26:11.719945: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+5: 2020-04-02 20:26:11.720685: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2: 2020-04-02 20:26:11.722573: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+5: 2020-04-02 20:26:11.723456: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2: 2020-04-02 20:26:11.729187: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+5: 2020-04-02 20:26:11.729681: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+6: 2020-04-02 20:26:11.735466: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x56550f7eeb10 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+6: 2020-04-02 20:26:11.735520: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-16GB, Compute Capability 7.0
+3: 2020-04-02 20:26:11.745341: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5571be9bb4e0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+3: 2020-04-02 20:26:11.745421: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-16GB, Compute Capability 7.0
+6: 2020-04-02 20:26:11.758192: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+6: name: Tesla V100-SXM2-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+6: pciBusID: 0000:90:00.0
+2: 2020-04-02 20:26:11.758874: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 2
+2: 2020-04-02 20:26:11.759034: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+6: 2020-04-02 20:26:11.759033: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+5: 2020-04-02 20:26:11.759775: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 5
+5: 2020-04-02 20:26:11.759877: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+6: 2020-04-02 20:26:11.762285: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+0: 2020-04-02 20:26:11.764374: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x563913955f80 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+0: 2020-04-02 20:26:11.764432: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-16GB, Compute Capability 7.0
+6: 2020-04-02 20:26:11.765268: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+6: 2020-04-02 20:26:11.765939: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+6: 2020-04-02 20:26:11.769093: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+3: 2020-04-02 20:26:11.771497: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+3: name: Tesla V100-SXM2-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+3: pciBusID: 0000:0a:00.0
+6: 2020-04-02 20:26:11.771523: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+3: 2020-04-02 20:26:11.772321: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+3: 2020-04-02 20:26:11.775272: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+7: 2020-04-02 20:26:11.777206: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55f3824cc2b0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+7: 2020-04-02 20:26:11.777267: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-16GB, Compute Capability 7.0
+6: 2020-04-02 20:26:11.777919: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+3: 2020-04-02 20:26:11.778036: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+3: 2020-04-02 20:26:11.778758: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+3: 2020-04-02 20:26:11.782237: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+4: 2020-04-02 20:26:11.782265: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5557a446f4b0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+4: 2020-04-02 20:26:11.782315: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-16GB, Compute Capability 7.0
+3: 2020-04-02 20:26:11.784793: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+1: 2020-04-02 20:26:11.785167: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x56194bbb4270 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+1: 2020-04-02 20:26:11.785229: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-16GB, Compute Capability 7.0
+0: 2020-04-02 20:26:11.788193: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+0: name: Tesla V100-SXM2-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+0: pciBusID: 0000:04:00.0
+0: 2020-04-02 20:26:11.789100: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+3: 2020-04-02 20:26:11.790531: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+0: 2020-04-02 20:26:11.792459: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+0: 2020-04-02 20:26:11.795194: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+0: 2020-04-02 20:26:11.795795: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+0: 2020-04-02 20:26:11.798554: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+7: 2020-04-02 20:26:11.799353: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+7: name: Tesla V100-SXM2-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+7: pciBusID: 0000:91:00.0
+7: 2020-04-02 20:26:11.800059: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+0: 2020-04-02 20:26:11.800714: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+7: 2020-04-02 20:26:11.803113: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+4: 2020-04-02 20:26:11.804739: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+4: name: Tesla V100-SXM2-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+4: pciBusID: 0000:8c:00.0
+4: 2020-04-02 20:26:11.805496: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+7: 2020-04-02 20:26:11.805719: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+7: 2020-04-02 20:26:11.806389: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+0: 2020-04-02 20:26:11.806826: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+4: 2020-04-02 20:26:11.808456: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+1: 2020-04-02 20:26:11.808680: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+1: name: Tesla V100-SXM2-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+1: pciBusID: 0000:05:00.0
+1: 2020-04-02 20:26:11.809401: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+7: 2020-04-02 20:26:11.809629: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+4: 2020-04-02 20:26:11.811101: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+4: 2020-04-02 20:26:11.811787: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+7: 2020-04-02 20:26:11.812020: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+1: 2020-04-02 20:26:11.812479: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+6: 2020-04-02 20:26:11.813399: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 6
+6: 2020-04-02 20:26:11.813486: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+1: 2020-04-02 20:26:11.814982: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+4: 2020-04-02 20:26:11.815106: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+1: 2020-04-02 20:26:11.815490: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+4: 2020-04-02 20:26:11.817159: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+1: 2020-04-02 20:26:11.818041: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+7: 2020-04-02 20:26:11.818039: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+1: 2020-04-02 20:26:11.819938: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+3: 2020-04-02 20:26:11.821247: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 3
+3: 2020-04-02 20:26:11.821322: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+4: 2020-04-02 20:26:11.822782: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+1: 2020-04-02 20:26:11.825411: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+0: 2020-04-02 20:26:11.842050: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+0: 2020-04-02 20:26:11.842146: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+7: 2020-04-02 20:26:11.864191: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 7
+7: 2020-04-02 20:26:11.864275: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+4: 2020-04-02 20:26:11.868053: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 4
+4: 2020-04-02 20:26:11.868141: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+1: 2020-04-02 20:26:11.870946: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 1
+1: 2020-04-02 20:26:11.871087: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2: 2020-04-02 20:26:11.948410: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+2: 2020-04-02 20:26:11.948455: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      2
+2: 2020-04-02 20:26:11.948475: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 2:   N
+5: 2020-04-02 20:26:11.951338: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+5: 2020-04-02 20:26:11.951377: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      5
+5: 2020-04-02 20:26:11.951396: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 5:   N
+2: 2020-04-02 20:26:12.001213: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15023 MB memory) -> physical GPU (device: 2, name: Tesla V100-SXM2-16GB, pci bus id: 0000:09:00.0, compute capability: 7.0)
+5: 2020-04-02 20:26:12.002884: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15023 MB memory) -> physical GPU (device: 5, name: Tesla V100-SXM2-16GB, pci bus id: 0000:8d:00.0, compute capability: 7.0)
+2: Initializing global variables...
+5: Initializing global variables...
+2: WARNING:tensorflow:From mldock_gnn.py:427: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+2:
+5: WARNING:tensorflow:From mldock_gnn.py:427: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+5:
+6: 2020-04-02 20:26:12.021121: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+6: 2020-04-02 20:26:12.021159: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      6
+6: 2020-04-02 20:26:12.021178: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 6:   N
+3: 2020-04-02 20:26:12.027753: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+3: 2020-04-02 20:26:12.027787: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      3
+3: 2020-04-02 20:26:12.027805: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 3:   N
+0: 2020-04-02 20:26:12.044269: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+0: 2020-04-02 20:26:12.044334: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      0
+0: 2020-04-02 20:26:12.044372: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 0:   N
+6: 2020-04-02 20:26:12.055794: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15023 MB memory) -> physical GPU (device: 6, name: Tesla V100-SXM2-16GB, pci bus id: 0000:90:00.0, compute capability: 7.0)
+7: 2020-04-02 20:26:12.061244: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+7: 2020-04-02 20:26:12.061286: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      7
+7: 2020-04-02 20:26:12.061305: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 7:   N
+4: 2020-04-02 20:26:12.062847: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+4: 2020-04-02 20:26:12.062888: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      4
+4: 2020-04-02 20:26:12.062905: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 4:   N
+3: 2020-04-02 20:26:12.063542: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15023 MB memory) -> physical GPU (device: 3, name: Tesla V100-SXM2-16GB, pci bus id: 0000:0a:00.0, compute capability: 7.0)
+1: 2020-04-02 20:26:12.063897: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+1: 2020-04-02 20:26:12.063938: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      1
+1: 2020-04-02 20:26:12.063956: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 1:   N
+6: Initializing global variables...
+6: WARNING:tensorflow:From mldock_gnn.py:427: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+6:
+0: 2020-04-02 20:26:12.074711: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15023 MB memory) -> physical GPU (device: 0, name: Tesla V100-SXM2-16GB, pci bus id: 0000:04:00.0, compute capability: 7.0)
+3: Initializing global variables...
+3: WARNING:tensorflow:From mldock_gnn.py:427: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+3:
+7: 2020-04-02 20:26:12.081917: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15023 MB memory) -> physical GPU (device: 7, name: Tesla V100-SXM2-16GB, pci bus id: 0000:91:00.0, compute capability: 7.0)
+4: 2020-04-02 20:26:12.082504: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15023 MB memory) -> physical GPU (device: 4, name: Tesla V100-SXM2-16GB, pci bus id: 0000:8c:00.0, compute capability: 7.0)
+1: 2020-04-02 20:26:12.082845: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15023 MB memory) -> physical GPU (device: 1, name: Tesla V100-SXM2-16GB, pci bus id: 0000:05:00.0, compute capability: 7.0)
+0: Initializing global variables...
+0: WARNING:tensorflow:From mldock_gnn.py:427: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+0:
+4: Initializing global variables...
+1: Initializing global variables...
+4: WARNING:tensorflow:From mldock_gnn.py:427: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+4:
+7: Initializing global variables...
+1: WARNING:tensorflow:From mldock_gnn.py:427: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+1:
+7: WARNING:tensorflow:From mldock_gnn.py:427: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+7:
+5: Done global variables init.
+5: WARNING:tensorflow:From mldock_gnn.py:430: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+5:
+3: Done global variables init.
+3: WARNING:tensorflow:From mldock_gnn.py:430: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+3:
+6: Done global variables init.
+6: WARNING:tensorflow:From mldock_gnn.py:430: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+6:
+2: Done global variables init.
+2: WARNING:tensorflow:From mldock_gnn.py:430: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+2:
+0: Done global variables init.
+0: WARNING:tensorflow:From mldock_gnn.py:430: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+0:
+1: Done global variables init.
+1: WARNING:tensorflow:From mldock_gnn.py:430: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+1:
+4: Done global variables init.
+4: WARNING:tensorflow:From mldock_gnn.py:430: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+4:
+7: Done global variables init.
+7: WARNING:tensorflow:From mldock_gnn.py:430: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+7:
+5: Worker test checkpoint saved to: ./checkpoints_test/model5.ckpt
+5: Restoring model from: /lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+6: Worker test checkpoint saved to: ./checkpoints_test/model6.ckpt
+6: Restoring model from: /lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+3: Worker test checkpoint saved to: ./checkpoints_test/model3.ckpt
+3: Restoring model from: /lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+2: Worker test checkpoint saved to: ./checkpoints_test/model2.ckpt
+2: Restoring model from: /lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+0: Coordinator Test checkpoint saved to: ./checkpoints/model0.ckpt
+0: Restoring model from: /lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+1: Worker test checkpoint saved to: ./checkpoints_test/model1.ckpt
+1: Restoring model from: /lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+7: Worker test checkpoint saved to: ./checkpoints_test/model7.ckpt
+7: Restoring model from: /lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+4: Worker test checkpoint saved to: ./checkpoints_test/model4.ckpt
+4: Restoring model from: /lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+5: Model restored sucessfully.
+5: To resume training use --restore /lus/sonexion/jbalma/temp/pharml-covid-6vsb-bindingdb-np-8-lr0.000000001-5,5-bs16//lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+5: Broadcasting...
+6: Model restored sucessfully.
+6: To resume training use --restore /lus/sonexion/jbalma/temp/pharml-covid-6vsb-bindingdb-np-8-lr0.000000001-5,5-bs16//lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+6: Broadcasting...
+3: Model restored sucessfully.
+3: To resume training use --restore /lus/sonexion/jbalma/temp/pharml-covid-6vsb-bindingdb-np-8-lr0.000000001-5,5-bs16//lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+3: Broadcasting...
+0: Model restored sucessfully.
+0: To resume training use --restore /lus/sonexion/jbalma/temp/pharml-covid-6vsb-bindingdb-np-8-lr0.000000001-5,5-bs16//lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+0: Broadcasting...
+2: Model restored sucessfully.
+2: To resume training use --restore /lus/sonexion/jbalma/temp/pharml-covid-6vsb-bindingdb-np-8-lr0.000000001-5,5-bs16//lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+2: Broadcasting...
+1: Model restored sucessfully.
+1: To resume training use --restore /lus/sonexion/jbalma/temp/pharml-covid-6vsb-bindingdb-np-8-lr0.000000001-5,5-bs16//lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+1: Broadcasting...
+7: Model restored sucessfully.
+7: To resume training use --restore /lus/sonexion/jbalma/temp/pharml-covid-6vsb-bindingdb-np-8-lr0.000000001-5,5-bs16//lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+7: Broadcasting...
+4: Model restored sucessfully.
+4: To resume training use --restore /lus/sonexion/jbalma/temp/pharml-covid-6vsb-bindingdb-np-8-lr0.000000001-5,5-bs16//lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90//checkpoints/model0.ckpt
+4: Broadcasting...
+5: Done broadcast
+4: Done broadcast
+6: Done broadcast
+0: Done broadcast
+2: Done broadcast
+7: Done broadcast
+3: Done broadcast
+1: Done broadcast
+2: WARNING:tensorflow:From mldock_gnn.py:184: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+2:
+5: WARNING:tensorflow:From mldock_gnn.py:184: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+5:
+6: WARNING:tensorflow:From mldock_gnn.py:184: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+6:
+4: WARNING:tensorflow:From mldock_gnn.py:184: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+4:
+7: WARNING:tensorflow:From mldock_gnn.py:184: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+7:
+3: WARNING:tensorflow:From mldock_gnn.py:184: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+3:
+0: WARNING:tensorflow:From mldock_gnn.py:470: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+0:
+1: WARNING:tensorflow:From mldock_gnn.py:184: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+1:
+0: Total trainable params:  503652
+0: ----------------------------------------
+0: Start training / testing loop.
+0: ----------------------------------------
+0: Epoch 0:
+0:   Testing.
+0: WARNING:tensorflow:From mldock_gnn.py:184: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+0:
+0:     Batch x100:
+5: 2020-04-02 20:26:20.238598: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+7: 2020-04-02 20:26:20.362221: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2: 2020-04-02 20:26:20.429950: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+1: 2020-04-02 20:26:20.533601: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+6: 2020-04-02 20:26:20.555232: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+3: 2020-04-02 20:26:20.572318: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+0: 2020-04-02 20:26:20.602586: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+4: 2020-04-02 20:26:20.633486: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+0: .Protein-Ligand Pairs Per Second =  26.43693402814391
+0: .Protein-Ligand Pairs Per Second =  26.907565802641855
+0: .Protein-Ligand Pairs Per Second =  27.246046393774634
+0: .Protein-Ligand Pairs Per Second =  27.440001588038776
+0: .Protein-Ligand Pairs Per Second =  27.604451211702987
+0: .Protein-Ligand Pairs Per Second =  28.008782894985888
+0: .Protein-Ligand Pairs Per Second =  28.294022750828415
+0: .Protein-Ligand Pairs Per Second =  28.576151499583098
+0: .Protein-Ligand Pairs Per Second =  28.787627392501562
+0: .Protein-Ligand Pairs Per Second =  28.972995423746056
+0: .Protein-Ligand Pairs Per Second =  29.154809053988554
+0: .Protein-Ligand Pairs Per Second =  29.281774291058834
+0: .Protein-Ligand Pairs Per Second =  29.327006699013122
+0: .Protein-Ligand Pairs Per Second =  29.371049386074436
+0: .Protein-Ligand Pairs Per Second =  29.457158387231516
+0: .Protein-Ligand Pairs Per Second =  29.583645521119085
+0: .Protein-Ligand Pairs Per Second =  29.630833379736156
+0: .Protein-Ligand Pairs Per Second =  29.69036989469644
+0: .Protein-Ligand Pairs Per Second =  29.758153051671208
+0: .Protein-Ligand Pairs Per Second =  29.800480928577425
+0: .Protein-Ligand Pairs Per Second =  29.82319548385761
+0: .Protein-Ligand Pairs Per Second =  29.90195917278169
+0: .Protein-Ligand Pairs Per Second =  29.96632551596891
+0: .Protein-Ligand Pairs Per Second =  29.969166415039115
+0:
+0:     Wait:  0.57s
+0:     Time:  1314.1s
+0:     Loss:  0.301260
+0:     Acc.:  0.322894  (101895.0/315568.0)
+0: Inference only mode, done with single pass so exiting...
+3: Inference only mode, done with single pass so exiting...
+1: Inference only mode, done with single pass so exiting...
+6: Inference only mode, done with single pass so exiting...
+5: Inference only mode, done with single pass so exiting...
+2: Inference only mode, done with single pass so exiting...
+7: Inference only mode, done with single pass so exiting...
+4: Inference only mode, done with single pass so exiting...
+0: ----------------------------------------
+0: Success!
+0: ----------------------------------------
+
+real    23m4.156s
+user    0m0.016s
+sys     0m0.089s
+done with 6vsb-bindingdb dataset test using 3
+saved  inference output to /lus/scratch/jbalma/pharml-covid19/results_2020-Apr04-1585877146/raw_outputs/model_3/6vsb-bindingdb_inference_model3.map...
+saved raw run data to /lus/scratch/jbalma/pharml-covid19/results_2020-Apr04-1585877146/full_run_data/model_3...
+Done testing COVID-19 compounds against all models
+Thu Apr  2 20:49:10 CDT 2020
+

@@ -44,16 +44,16 @@ Setup
             --mlp_latent ${MLP_LATENT} \
             --mlp_layers ${MLP_LAYERS} \
             --gnn_layers ${GNN_LAYERS} \
-            --hvd \
+            --hvd True \
             --num_features ${NUM_FEATURES} \
             --data_threads 2 \
             --mode classification \
-            --inference_only
+            --inference_only True
             --restore=../pretrain-models/mh-gnnx5-ensemble/ensemble_member_${n}/checkpoints/model0.ckpt" \
-            --inference_out \
-            --epochs 1 2>&1 |& tee covid19-${MAP_TEST_NAME}.out
+            --inference_out covid19_inference_${MAP_TEST_NAME}.out \
+            --epochs 1 2>&1 |& tee log-covid19-${MAP_TEST_NAME}.out
 
-    -> Using the --inference-output options tells PharML.Bind to save the outputs to disk, indexed by the compound ID
+    -> Using the --inference_out options tells PharML.Bind to save the outputs to disk, indexed by the compound ID
 
 
 
@@ -77,13 +77,13 @@ Setup
         --mlp_latent ${MLP_LATENT} \
         --mlp_layers ${MLP_LAYERS} \
         --gnn_layers ${GNN_LAYERS} \
-        --hvd \
+        --hvd True \
         --num_features ${NUM_FEATURES} \
         --data_threads 2 \
         --mode classification \
-        --inference_only
+        --inference_only \
         --restore=../pretrain-models/mh-gnnx5-ensemble/ensemble_member_${n}/checkpoints/model0.ckpt" \
-        --inference_out \
+        --inference_out covid19_inference_${MAP_TEST_NAME}.out \
         --epochs 1 2>&1 |& tee covid19-${MAP_TEST_NAME}.out
 
 
