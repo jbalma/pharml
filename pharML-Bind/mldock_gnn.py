@@ -85,66 +85,6 @@ def plot_history(x_vals, lst_train, lst_test, plot_label, ylabel):
     plt.savefig(plot_name, bbox_inches='tight')
 
 
-def plot_graphs_tuple_np(graphs_tuple, my_gid):
-  networkx_graphs = utils_np.graphs_tuple_to_networkxs(graphs_tuple[-1])
-  num_graphs = len(networkx_graphs)
-  _, axes = plt.subplots(1, num_graphs, figsize=(5*num_graphs, 5))
-  if num_graphs == 1:
-    axes = axes,
-  i=0
-  for graph, ax in zip(networkx_graphs, axes):
-    print("plot graph =",graph, "i = ", i)
-    plot_graph_networkx(graph, ax, my_gid)
-    i=i+1
-
-
-def plot_graph_networkx(graph, ax, gid, pos=None):
-  node_labels = {node: "{:.3g}".format(data["features"][0])
-                 for node, data in graph.nodes(data=True)
-                 if data["features"] is not None}
-  edge_labels = {(sender, receiver): "{:.3g}".format(data["features"][0])
-                 for sender, receiver, data in graph.edges(data=True)
-                 if data["features"] is not None}
-  global_label = ("{:.3g}".format(graph.graph["features"][0])
-                  if graph.graph["features"] is not None else None)
-  #plot_name = global_label + str(gid) + '.svg'
-  if pos is None:
-    pos = nx.spring_layout(graph)
-  nx.draw_networkx(graph, pos, ax=ax, labels=node_labels)
-
-  if edge_labels:
-    nx.draw_networkx_edge_labels(graph, pos, edge_labels, ax=ax)
-
-  if global_label:
-    plt.text(0.05, 0.95, global_label, transform=ax.transAxes)
-
-  ax.yaxis.set_visible(False)
-  ax.xaxis.set_visible(False)
-  #plt.savefig(plot_name, bbox_inches='tight')
-  return pos
-
-
-def plot_compare_graphs(graphs_tuples, labels):
-  plt.clf() 
-  #plt.clear()
-  pos = None
-  num_graphs = len(graphs_tuples)
-  _, axes = plt.subplots(1, num_graphs, figsize=(5*num_graphs, 5))
-  if num_graphs == 1:
-    axes = axes,
-  pos = None
-  for name, graphs_tuple, ax in zip(labels, graphs_tuples, axes):
-    graph = utils_np.graphs_tuple_to_networkxs(graphs_tuple)[0]
-    pos = plot_graph_networkx(graph, ax, name, pos=pos)
-    ax.set_title(name)
-    plt.plot(pos)
-    print("graph name=",name, ", graph=",graph)
-    plt.savefig(name+'.png')
-  #plot_name = './myplot' + labels + '.png'
-  #plt.savefig(plot_name)
-  #plt.clf()
-
-
 def average_distributed_metrics(sess, acc, solved, loss):
     #Average over workers metrics when using horovod
     avg_acc = tf.cast(acc,tf.float32)
@@ -156,6 +96,8 @@ def average_distributed_metrics(sess, acc, solved, loss):
     acc = sess.run(avg_acc_op)
     solved = sess.run(avg_sol_op)
     loss = sess.run(avg_loss_op)
+    
+    #return avg_acc_op.run(), avg_sol_op.run(), avg_loss_op.run()
     return acc, solved, loss
 
 
@@ -269,8 +211,8 @@ def run_batches(sess, batch_generator, input_p_ph, input_l_ph, target_ph, input_
         target_graphs = utils_np.data_dicts_to_graphs_tuple(target_dicts)
 
         # Plot input protein
-        if DEBUG and b % 100 == 0 and b>0:
-            plot_compare_graphs(input_graphs_l, str(b))#[str(bl) for bl in range(0,b)])
+        #if DEBUG and b % 100 == 0 and b>0:
+        #    plot_compare_graphs(input_graphs_l, str(b))#[str(bl) for bl in range(0,b)])
      
 
         # Build a feed dict for the data.
@@ -574,7 +516,6 @@ def run_gnn(args,model_ops,test_items,train_items=None,optimizer=None):
         loss = loss / count
         if args.hvd:
             acc, solved, loss = average_distributed_metrics(sess, acc, solved, loss)
-            hvd.allreduce([], name="Barrier")
             count = hvd.size()*count
             solved = hvd.size()*solved
         if RANK == 0:
@@ -589,7 +530,7 @@ def run_gnn(args,model_ops,test_items,train_items=None,optimizer=None):
                 plot_history(log_epochs, lr_hist, lr_hist, 'PharML-LR','learning rate')
 
         # Checkpoint if needed.
-        if acc > acc_best:
+        if acc > acc_best and not INFERENCE_ONLY:
             acc_best = acc
             epoch_best = epoch
             if RANK == 0:
@@ -602,12 +543,14 @@ def run_gnn(args,model_ops,test_items,train_items=None,optimizer=None):
         if INFERENCE_ONLY:
             # Exit loop after first inference if in inference only-mode.
             print("Inference only mode, done with single pass so exiting...")
+            hvd.shutdown()
             break;
 
         #If test accuracy has not improved for more than 15 epochs, call it converged and exit
         if( (epoch-epoch_best) >= 15):
             print("Model Converged! Exiting Nicely...")
             #sys.exit(0)
+            hvd.shutdown()
             break;
             
     # Success!

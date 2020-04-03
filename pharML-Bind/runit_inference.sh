@@ -20,38 +20,52 @@
 #source ./setup_env_cuda10_covi19.sh
 source ./config_cuda10.sh
 unset PYTHONPATH
-
+module rm PrgEnv-cray
 #source activate ${INSTALL_DIR}
-MLD_RDK_ENV_INSTALL_DIR=~/cuda10_env
-source activate $MLD_RDK_ENV_INSTALL_DIR
+#MLD_RDK_ENV_INSTALL_DIR=~/cuda10_env
+#source activate $MLD_RDK_ENV_INSTALL_DIR
 #source activate /home/users/jbalma/cuda10_env_nccl
-python -m pip install --force-reinstall graph_nets "tensorflow_gpu>=1.15,<2" "dm-sonnet<2" "tensorflow_probability<0.9"
+
+INSTALL_DIR=/lus/scratch/jbalma/condenv-cuda10-pharml
+
+#conda create -y --prefix $INSTALL_DIR python=3.6 cudatoolkit=10.0 cudnn
+source activate $INSTALL_DIR/
+export PATH=${INSTALL_DIR}/bin:${PATH} #/home/users/${USER}/.local/bin:${PATH}
+#conda install -y -c conda-forge rdkit biopython scipy dask
+#conda install -y -c anaconda pip
+#python -m pip install --force-reinstall graph_nets "tensorflow_gpu>=1.15,<2" "dm-sonnet<2" "tensorflow_probability<0.9"
 echo $CUDATOOLKIT_HOME
 which mpicc
 which mpic++
 which gcc
 which python
-#Vanilla Cluster with OpenMPI
-#CXX=mpicxx CC=mpicc HOROVOD_CUDA_HOME=${CUDATOOLKIT_HOME} HOROVOD_MPICXX_SHOW="mpicxx -show" HOROVOD_MPI_HOME=${MPI_PATH} HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITHOUT_PYTORCH=1 HOROVOD_WITHOUT_MXNET=1 pip install --global-option=build_ext --global-option="-I ${CUDATOOLKIT_HOME}/include" -v --no-cache-dir horovod
 
-#pip uninstall horovod
-CC=$MPI_CC CXX=$MPI_CXX HOROVOD_CUDA_HOME=${CUDATOOLKIT_HOME} HOROVOD_MPICXX_SHOW="mpic++ -show" HOROVOD_HIERARCHICAL_ALLREDUCE=1 HOROVOD_MPI_HOME=${MPI_PATH} HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITHOUT_PYTORCH=1 HOROVOD_WITHOUT_MXNET=1 python -m pip install --global-option="-I ${CUDATOOLKIT_HOME}/include" --no-cache-dir horovod
-#pip uninstall horovod
-#CC=gcc CXX=mpic++ pip install --no-cache-dir horovod
+#conda install cmake
+#conda install pip
+pip uninstall horovod
+export CMAKE_CXX_COMPILER=$MPI_CXX
+export CMAKE_CC_COMPILER=$MPI_CC
+export HOROVOD_ALLOW_MIXED_GPU_IMPL=0
+
+#HOROVOD_BUILD_ARCH_FLAGS="-mavx256" HOROVOD_CUDA_HOME=${CUDATOOLKIT_HOME} HOROVOD_MPICXX_SHOW="mpic++ -show" HOROVOD_HIERARCHICAL_ALLREDUCE=0 HOROVOD_MPI_HOME=${MPI_PATH} HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITHOUT_PYTORCH=1 HOROVOD_WITHOUT_MXNET=1 pip install --global-option=build_ext --global-option="-I ${CUDATOOLKIT_HOME}/include" --no-cache-dir horovod
+
+HOROVOD_BUILD_ARCH_FLAGS="-mavx256" HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITHOUT_PYTORCH=1 HOROVOD_WITHOUT_MXNET=1 pip install --no-cache-dir horovod
+#exit
+
 export SCRATCH=/lus/scratch/jbalma
-#export CRAY_CUDA_MPS=1
+export CRAY_CUDA_MPS=1
 export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
-#export TF_ENABLE_AUTO_MIXED_PRECISION=1
+export TF_ENABLE_AUTO_MIXED_PRECISION=1
 #export CRAY_CUDA_PROXY=1
 echo "Running..."
 #export CRAY_CUDA_MPS=1
-#export TF_FP16_CONV_USE_FP32_COMPUTE=0
-#export TF_FP16_MATMUL_USE_FP32_COMPUTE=0
+export TF_FP16_CONV_USE_FP32_COMPUTE=0
+export TF_FP16_MATMUL_USE_FP32_COMPUTE=0
 #export HOROVOD_TIMELINE=${SCRATCH_PAD}/timeline.json
 #export HOROVOD_FUSION_THRESHOLD=256000000
 #export HOROVOD_FUSION_THRESHOLD=500000
 #export HOROVOD_FUSION_THRESHOLD=0
-export HOROVOD_MPI_THREADS_DISABLE=1
+#export HOROVOD_MPI_THREADS_DISABLE=1
 #export HOROVOD_FUSION_THRESHOLD=0
 
 d="$(date +%Y)-$(date +%h%m-%s)"
@@ -73,32 +87,19 @@ list_of_files="l0_1pct_train"
 model_n=3
 for f in $list_of_files
 do
-    MAP_TRAIN_NAME=$f
-    #MAP_TRAIN_NAME=l0_1pct_train
-    MAP_TEST_NAME=6vsb-fda
-    #MAP_TEST_NAME=l0_1pct_test
-    #MAP_TEST_NAME=bindingdb_2019m4_1of75pct
-    #MAP_TEST_BIG_NAME=bindingdb_2019m4_75
-    #MAP_TEST_ZINC_NAME=4ib4_zinc15
-
-    MAP_TRAIN_PATH=/lus/scratch/jbalma/avose_backup/data/map/${MAP_TRAIN_NAME}.map
-    #MAP_TRAIN_PATH=/lus/scratch/jbalma/data/mldock/tools/${MAP_TRAIN_NAME}.map
+    #MAP_TRAIN_NAME="l0_split_10_train"
+    MAP_TRAIN_NAME="6vsb-fda"
+    MAP_TEST_NAME="6vsb-fda"
+    
+    #MAP_TRAIN_PATH=/lus/scratch/jbalma/avose_backup/data/map/${MAP_TRAIN_NAME}.map
     #MAP_TEST_PATH=/lus/scratch/jbalma/avose_backup/data/map/${MAP_TEST_NAME}.map
+    MAP_TRAIN_PATH=/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/${MAP_TRAIN_NAME}.map
     MAP_TEST_PATH=/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/${MAP_TEST_NAME}.map
-    #MAP_TEST_PATH=/lus/scratch/jbalma/data/mldock/tools/${MAP_TEST_NAME}.map
-    #MAP_TEST_BIG_PATH=/lus/scratch/jbalma/avose_backup/data/map/${MAP_TEST_BIG_NAME}.map
-    #MAP_TEST_ZINC_PATH=/lus/scratch/jbalma/avose_backup/data_zinc15/map/${MAP_TEST_ZINC_NAME}.map
 
     echo "Model number = ${model_n}"
     echo "Running with training input data ${MAP_TRAIN_PATH}"
     echo "test data from: ${MAP_TEST_PATH}"
 
-#-rw-r--r--. 1 avose criemp 9.3M Aug  6 07:52 /lus/scratch/avose/data/map/bindingdb_2019m4_5of25pct_a.map
-#-rw-r--r--. 1 avose criemp 8.6M Aug  6 07:52 /lus/scratch/avose/data/map/bindingdb_2019m4_5of25pct_b.map
-#-rw-r--r--. 1 avose criemp 9.0M Aug  6 07:52 /lus/scratch/avose/data/map/bindingdb_2019m4_5of25pct_c.map
-#-rw-r--r--. 1 avose criemp 8.9M Aug  6 07:52 /lus/scratch/avose/data/map/bindingdb_2019m4_5of25pct_d.map
-#-rw-r--r--. 1 avose criemp 9.6M Aug  6 07:52 /lus/scratch/avose/data/map/bindingdb_2019m4_5of25pct_e.map
-#-rw-r--r--. 1 avose criemp 149M Jun 23 07:06 /lus/scratch/avose/data/map/bindingdb_2019m4_75.map
 
     export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
     #export OMPI_MCA_btl_openib_allow_ib=false
@@ -111,13 +112,13 @@ do
     #export DL_COMM_USE_CRCCL=1
 
     NODES=1 #nodes total
-    PPN=8 #processer per node
-    PPS=4 #processes per socket
-    NP=8 #processes total
-    NC=8  #job threads per rank
-    NT=8  #batching threads per worker
-    BS=2 #batch size per rank
-    BS_TEST=2 #inference batch size
+    PPN=2 #processer per node
+    PPS=1 #processes per socket
+    NP=2 #processes total
+    NC=4  #job threads per rank
+    NT=4  #batching threads per worker
+    BS=1 #batch size per rank
+    BS_TEST=1 #inference batch size
     #LR0=0.000001 #for BS=2,4,6
     LR0=0.000000001
     MLP_LATENT=32,32
@@ -132,7 +133,7 @@ do
     TEMP_DIR=${SCRATCH}/temp/pharml-covid-${MAP_TEST_NAME}-np-${NP}-lr${LR0}-${GNN_LAYERS}-bs${BS_TEST}
     rm -rf $TEMP_DIR
     mkdir -p ${TEMP_DIR}
-    cp -r -v /cray/css/users/jbalma/Innovation-Proposals/mldock/mldock-gnn/* ${TEMP_DIR}/
+    cp -r /cray/css/users/jbalma/Innovation-Proposals/mldock/mldock-gnn/* ${TEMP_DIR}/
     cd ${TEMP_DIR}
     export SLURM_WORKING_DIR=${TEMP_DIR}
 
@@ -147,7 +148,7 @@ do
     time srun --cpu_bind=none -p spider -C V100 -l -N ${NODES} --ntasks-per-node=1 -u ./restart_mps.sh 2>&1 |& tee mps_result.txt
 
     #Start the inference run on a single model
-    time srun -c ${NC} --hint=multithread -C V100 -p spider -l -N ${NODES} -n ${NP} --ntasks-per-node=${PPN} --ntasks-per-socket=${PPS} -u --cpu_bind=none python mldock_gnn.py \
+    time srun -c ${NC} --hint=multithread --cpu_bind=none -C V100 -p spider -l -N ${NODES} -n ${NP} --ntasks-per-node=${PPN} --ntasks-per-socket=${PPS} -u --cpu_bind=none python mldock_gnn.py \
         --map_train ${MAP_TRAIN_PATH} \
         --map_test ${MAP_TEST_PATH} \
         --batch_size ${BS} \
@@ -155,11 +156,11 @@ do
         --mlp_latent ${MLP_LATENT} \
         --mlp_layers ${MLP_LAYERS} \
         --gnn_layers ${GNN_LAYERS} \
-        --hvd True \
         --num_features ${NUM_FEATURES} \
         --data_threads ${NT} \
         --mode ${MODE} \
         --inference_only True \
+        --hvd True \
         --restore="${ENSEMBLE_MODELS}/checkpoints/model0.ckpt" \
         --inference_out ${INFER_OUT} \
         --epochs 1 2>&1 |& tee covid19-${MAP_TEST_NAME}.out
@@ -167,7 +168,7 @@ do
     mkdir -p ${ENSEMBLE_OUTPUT}/model_${model_n}/${MAP_TEST_NAME}_inference_output
     cp ./${MAP_TEST_NAME}_inference*.map ${ENSEMBLE_OUTPUT}/model_${model_n}/${MAP_TEST_NAME}_inference_output/
     cat ./${MAP_TEST_NAME}_inference*.map > ${ENSEMBLE_OUTPUT}/model_${model_n}/${MAP_TEST_NAME}_inference_model${model_n}.map
-    cp -v -r ${TEMP_DIR} ${ENSEMBLE_RAW}/model_${model_n}/
+    cp -r ${TEMP_DIR} ${ENSEMBLE_RAW}/model_${model_n}/
     sleep 10
     
     echo "done with ${MAP_TEST_NAME} dataset test using $model_n"
