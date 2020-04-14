@@ -58,7 +58,6 @@ tf.set_random_seed(SEED)
 DEBUG = False
 MODE = 'classification'
 TARGET_MODE = 'globalstate'
-#TARGET_MODE='activesite'
 INFERENCE_ONLY = False
 INFERENCE_OUT = None
 DATA_THREADS = 1
@@ -67,7 +66,7 @@ RANK = 0
 RANKS = 1
 BATCH_SIZE=1
 BATCH_SIZE_TEST=1
-
+PRINT_EVERY = 10
 ############################################################
 
 
@@ -87,6 +86,7 @@ def plot_history(x_vals, lst_train, lst_test, plot_label, ylabel):
 
 def average_distributed_metrics(sess, acc, solved, loss):
     #Average over workers metrics when using horovod
+    import horovod.tensorflow as hvd
     avg_acc = tf.cast(acc,tf.float32)
     avg_sol = tf.cast(solved,tf.float32)
     avg_loss = tf.cast(loss,tf.float32)
@@ -152,7 +152,8 @@ def write_predictions(items,outputs):
 
 def item_batch_iter(items, batch_size, shuffle=True):
     # Create data loading threads for the set of items.
-    data_threads = du.DataLoader(items,batch_size*4,nthreads=DATA_THREADS,shuf=shuffle)
+    data_threads = du.DataLoader(items,batch_size,nthreads=DATA_THREADS,shuf=shuffle)
+    #data_threads = du.DataLoader(items,batch_size,nthreads=DATA_THREADS,shuf=shuffle)
     data_threads.start()
     # Init batch of input / target items.
     it, pd, ld, td = ([], [],[],[])
@@ -190,30 +191,39 @@ def run_batches(sess, batch_generator, input_p_ph, input_l_ph, target_ph, input_
     solved, count, loss = (0.0, 0.0, 0.0)
     # Process data in batches.
     if DEBUG:
-        sys.stdout.write("    Batch x100:")
+        sys.stdout.write("    Batch x%s:"%str(PRINT_EVERY))
         sys.stdout.flush()
     for b, batch in enumerate(batch_generator()):
         items, input_dicts_p, input_dicts_l, target_dicts = batch
         # Progress print.
-        if DEBUG and b % 100 == 0 and b>0:
-            sys.stdout.write(".")
+        #if DEBUG and b % 10 == 0 and b>0:
+        if ( (b % PRINT_EVERY == 0) and (b>0) ):
             if INFERENCE_ONLY:
                 examples_seen=b*BATCH_SIZE_TEST
             else: 
                 examples_seen=b*BATCH_SIZE
+              
             elapsed_time=time.time()-start_time
             plpps = float(examples_seen)/elapsed_time
-            print("Protein-Ligand Pairs Per Second = ", plpps)
-            sys.stdout.flush()
+            
+            if DISTRIBUTED:
+                import horovod.tensorflow as hvd
+                avg_plpps = tf.cast(plpps,tf.float32)
+                avg_plpps_op = hvd.allreduce(avg_plpps)
+                plpps = sess.run(avg_plpps_op)
+                gplpps = plpps*hvd.size()
+                if DEBUG:
+                    print("Average Protein-Ligand Pairs Per Second = ", plpps, ", Global = ", gplpps)
+                    sys.stdout.flush()
+            else: 
+                if DEBUG:
+                    print("Protein-Ligand Pairs Per Second = ", plpps)
+                    sys.stdout.flush()
         # Convert data graph dicts to graphs tuple objects
         input_graphs_p = utils_np.data_dicts_to_graphs_tuple(input_dicts_p)
         input_graphs_l = utils_np.data_dicts_to_graphs_tuple(input_dicts_l)
         target_graphs = utils_np.data_dicts_to_graphs_tuple(target_dicts)
 
-        # Plot input protein
-        #if DEBUG and b % 100 == 0 and b>0:
-        #    plot_compare_graphs(input_graphs_l, str(b))#[str(bl) for bl in range(0,b)])
-     
 
         # Build a feed dict for the data.
         input_p_feed_dict = utils_tf.get_feed_dict(input_p_ph, input_graphs_p)
@@ -253,7 +263,8 @@ def parse_args():
     global RANK
     global RANKS
     global DTYPE
-    global hvd
+    #global hvd
+    global DISTRIBUTED
     global BATCH_SIZE
     global BATCH_SIZE_TEST
     # Parse command line args.
@@ -290,19 +301,32 @@ def parse_args():
     print(args)
     if args.hvd:
         print("Starting horovod...")
-        import horovod.tensorflow as hvd_temp
-        hvd = hvd_temp
+        import horovod.tensorflow as hvd
+        #hvd = hvd_temp
         hvd.init()
         RANK = hvd.rank()
         RANKS = hvd.size()
+        DISTRIBUTED=True
         print("Initialization of horovod complete...")
+        #Index the output filenames for inference output data by rank ID
         if(args.inference_out != None):
             INFERENCE_OUT = str(args.inference_out).split(".")[0] + "_%s.map"%str(RANK)
             print("Rank %s"%str(RANK), " is saving inference output to %s"%str(INFERENCE_OUT))
-        
+
     if RANK != 0:
+        #Only rank 0 should print debug info
         DEBUG = False
-    banner_print("PharML-GNN")
+        #Reduce logging for all ranks other than 0
+        os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+    #
+    banner_print("PharML.Bind-GNN: Version 1.0.1 - Framework for Open Therapeutics with Graph Neural Networks.")
+    banner_print("============================================================================================")
+    banner_print("  Developed by")
+    banner_print("      Jacob Balma: jb.mt19937@gmail.com")
+    banner_print("      Aaron Vose:  avose@aaronvose.net")
+    banner_print("      Yuri Petersen: yuripeterson@gmail.com")
+    banner_print("This work is supported by collaboration with Cray, Inc, Medical University of South Carolina (MUSC) and Hewlett Packard Enterprise (HPE). ")
+    banner_print("============================================================================================")
     if DEBUG:
         print(args)
     # Return parsed args.
@@ -392,7 +416,10 @@ def build_optimizer(args,loss_op,num_train_items):
     #optimizer = tf.train.GradientDescentOptimizer(learning_rate)
     #optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate)
     if args.hvd:
-        optimizer = hvd.DistributedOptimizer(optimizer, use_locking=False)
+        import horovod.tensorflow as hvd
+        compression = hvd.Compression.fp16 if args.use_fp16 else hvd.Compression.none
+        
+        optimizer = hvd.DistributedOptimizer(optimizer, use_locking=False, compression=compression, op=hvd.Average)
         optimizer._learning_rate = tf.cast(learning_rate,tf.float32)
     else:
         optimizer._learning_rate = tf.cast(learning_rate,tf.float32)
@@ -409,7 +436,10 @@ def run_gnn(args,model_ops,test_items,train_items=None,optimizer=None):
     config = tf.ConfigProto(allow_soft_placement=True, log_device_placement=False)
     config.gpu_options.allow_growth = True
     if args.hvd:
+        import horovod.tensorflow as hvd
         config.gpu_options.visible_device_list = str(hvd.local_rank())
+        #Some versions of tensorflow(version<1.15) have issues with allocating all device memory
+        #In this case, uncomment the following line
         #config.gpu_options.per_process_gpu_memory_fraction = 0.5
         checkpoint_dir = './checkpoints' if RANK == 0 else './checkpoints_test'
     else:
@@ -423,9 +453,14 @@ def run_gnn(args,model_ops,test_items,train_items=None,optimizer=None):
         print ("Successfully created directory %s."%checkpoint_dir)
     sess = tf.Session(config=config)
     # Initialize Model.
-    print("Initializing global variables...")
+    if(RANK==0):
+        print("All workers are initializing global variables...")
+    #All ranks should initialize their variables before 
+    #loading checkpoints or getting broadcast variables 
+    #from rank 0
     sess.run(tf.global_variables_initializer())
-    print("Done global variables init.")
+    if(RANK==0):
+        print("Done global variables init.")
 
     saver = tf.train.Saver()
     model_path = checkpoint_dir + '/model%s.ckpt'%RANK
@@ -439,9 +474,6 @@ def run_gnn(args,model_ops,test_items,train_items=None,optimizer=None):
         save_path = saver.save(sess, model_path)
         print("Worker test checkpoint saved to: %s"%save_path)
 
-        
-
-    
     
     if args.restore != None:
         restore_path = args.restore
@@ -456,16 +488,8 @@ def run_gnn(args,model_ops,test_items,train_items=None,optimizer=None):
         print("To resume training use --restore %s"%str(os.getcwd()+"/"+restore_path))
         print("Training new model.")
 
-    
-    if args.hvd:
-        print("Broadcasting...")
-        bcast_op = hvd.broadcast_global_variables(0)
-        sess.run(bcast_op)
-        print("Done broadcast")
-
-
     # Print total model parameters.
-    if DEBUG:
+    if 0:
         total_parameters = 0
         for variable in tf.trainable_variables():
             variable_parameters = 1
@@ -473,6 +497,16 @@ def run_gnn(args,model_ops,test_items,train_items=None,optimizer=None):
                 variable_parameters *= dim.value
             total_parameters += variable_parameters
         print("Total trainable params: ", total_parameters)
+
+    if args.hvd:
+        print("Broadcasting...")
+        import horovod.tensorflow as hvd
+        bcast_op = hvd.broadcast_global_variables(0)
+        sess.run(bcast_op)
+        time.sleep(10)
+        print("Done broadcast")
+
+
     # Training / inference loop.
     banner_print("Start training / testing loop.")
     acc_best = 0.0
@@ -546,8 +580,11 @@ def run_gnn(args,model_ops,test_items,train_items=None,optimizer=None):
             hvd.shutdown()
             break;
 
-        #If test accuracy has not improved for more than 15 epochs, call it converged and exit
-        if( (epoch-epoch_best) >= 15):
+        # If test accuracy has not improved for more than 
+        # 15 epochs, call it converged and exit - this is what 
+        # was used in paper, but since we've found lowering 
+        # this to 5 epochs is sufficient in some cases
+        if( (epoch-epoch_best) >= 15 and not INFERENCE_ONLY):
             print("Model Converged! Exiting Nicely...")
             #sys.exit(0)
             hvd.shutdown()
@@ -566,13 +603,14 @@ def main():
     # Load map files.
     train, test = load_map_items(args)
     # Load one item set for their shape.
-    protein, ligand, target = du.load_item(test[0])
+    protein, ligand, target = du.load_item(train[0])
     # Build the GNN model.
     ops = build_gnn(args,(protein,ligand,target))
     # Setup the training optimizer
     if INFERENCE_ONLY:
-        optimizer = None
-        ops += (None,)
+        #optimizer = None
+        optimizer, step_op = build_optimizer(args,ops[-1],len(test))
+        ops += (step_op,)
     else:
         optimizer, step_op = build_optimizer(args,ops[-1],len(train))
         ops += (step_op,)

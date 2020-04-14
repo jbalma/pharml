@@ -23,7 +23,7 @@ from rdkit.Chem import AllChem as Chem
 from rdkit.Chem import PandasTools
 from rdkit import RDLogger
 from Bio.PDB import *
-
+import re
 
 ############################################################
 
@@ -31,12 +31,14 @@ from Bio.PDB import *
 IC50_cutoff = 10000     # nM
 NHGD_cutoff = 4         # A
 BATCH_SIZE  = 512       # PDBs
-max_ptn_sz  = 10000     # atoms
+#max_ptn_sz  = 10000     # atoms
+max_ptn_sz  = 100000
 min_ptn_sz  = 500       # atoms
 INFERENCE_ONLY = True   # no affinity data, all labelled no-bind
-
+MAX_LIG_ATMS = 500
+MIN_LIG_ATMS = 5
 ############################################################
-
+MOL_TO_NDX = {}
 
 NAME_TO_CHARGE = {
     'H':1,
@@ -89,41 +91,45 @@ def write_nhg_file(atoms,edges,nhgfn):
 def write_lig_file(mol,ligfn):
     with open(ligfn,"w") as ligf:
         atoms = mol.GetAtoms();
-        # Write number of atoms
-        ligf.write("%d\n"%(len(atoms)))
-        # Write atomic charges
-        for atom in atoms:
-            ligf.write("%s "%(str(atom.GetAtomicNum())))
-        ligf.write("\n")
-        # Write formal charges
-        for atom in atoms:
-            ligf.write("%s "%(str(atom.GetFormalCharge())))
-        ligf.write("\n")
-        # Write bond matrix
-        for ndx_a in range(0, len(atoms)):
-            for ndx_b in range(0, len(atoms)):
-                bond = mol.GetBondBetweenAtoms(ndx_a, ndx_b)
-                if bond != None:
-                    if bond.GetIsAromatic():
-                        ligf.write("4")
+        if (mol.GetNumAtoms()>MIN_LIG_ATMS):
+        #    continue
+        #else
+        #    break
+            # Write number of atoms
+            ligf.write("%d\n"%(len(atoms)))
+            # Write atomic charges
+            for atom in atoms:
+                ligf.write("%s "%(str(atom.GetAtomicNum())))
+            ligf.write("\n")
+            # Write formal charges
+            for atom in atoms:
+                ligf.write("%s "%(str(atom.GetFormalCharge())))
+            ligf.write("\n")
+            # Write bond matrix
+            for ndx_a in range(0, len(atoms)):
+                for ndx_b in range(0, len(atoms)):
+                    bond = mol.GetBondBetweenAtoms(ndx_a, ndx_b)
+                    if bond != None:
+                        if bond.GetIsAromatic():
+                            ligf.write("4")
+                        else:
+                            btype = str(bond.GetBondType())
+                            if btype == "SINGLE":
+                                btype = "1"
+                            elif btype == "DOUBLE":
+                                btype = "2"
+                            elif btype == "TRIPLE":
+                                btype = "3"
+                            ligf.write(str(btype))
                     else:
-                        btype = str(bond.GetBondType())
-                        if btype == "SINGLE":
-                            btype = "1"
-                        elif btype == "DOUBLE":
-                            btype = "2"
-                        elif btype == "TRIPLE":
-                            btype = "3"
-                        ligf.write(str(btype))
-                else:
-                    ligf.write("0")                    
-                ligf.write(" ")
-            ligf.write("\n")
-        # Write (empty) distance matrix
-        for ndx_a in range(0, len(atoms)):
-            for ndx_b in range(0, len(atoms)):
-                ligf.write("0 ")
-            ligf.write("\n")
+                        ligf.write("0")                    
+                    ligf.write(" ")
+                ligf.write("\n")
+            # Write (empty) distance matrix
+            for ndx_a in range(0, len(atoms)):
+                for ndx_b in range(0, len(atoms)):
+                    ligf.write("0 ")
+                ligf.write("\n")
 
 
 def write_map_file(ligands,proteins,outdir="data/"):
@@ -137,15 +143,12 @@ def write_map_file(ligands,proteins,outdir="data/"):
             for ligid in proteins[pdbid]:
                 # Get the ligand and convert to bind / nobind.
                 lig = ligands[ligid]
-                ic50_str = str(lig[2])
-                if INFERENCE_ONLY != True:
-                    bind = True if ic50_str[0] != '>' and float(ic50_str[1:]) <= IC50_cutoff else False
-                else:
-                    bind = np.random.randint(2, size=1)[0]
+                ic50_str = '0'
+                bind = False
                 n_bind   += int(bind)
                 n_nobind += int(not bind)
                 # Write two input files, nhg before lig.
-                out += "2 %s %s"%("../nhg/"+str(pdbid)+".nhg", "../lig/lig"+str(ligid)+".lig")
+                out += "2 %s %s"%("../nhg/"+str(pdbid)+".nhg", "../lig/lig"+str(MOL_TO_NDX[str(ligid)])+".lig")
                 # Write one output, the bind state as 1 / 0.
                 bind_float = 1.0 if bind == True else 0.0
                 out += " 1 %f"%(bind_float)
@@ -209,7 +212,7 @@ def split_sdf(file_name,outdir="data/"):
         df = pd.DataFrame(columns=pdb_list[0].append('Molecule'))
         for pdb in pdb_list[1:-1]:
             print("pdb=",pdb)
-            df = df.append({'PDB ID':pdb}, ignore_index=True)
+            df = df.append({'PDB ID':pdb}, ignore_index=False)
     print("Raw cols = ", [str(x) for x in df.columns])
     # Select only the needed columns and merge the two PDB cols.
     #df_list=['PDB ID(s) for Ligand-Target Complex','PDB ID(s) of Target Chain','SMILES','IC50 (nM)','Molecule']
@@ -232,7 +235,7 @@ def split_sdf(file_name,outdir="data/"):
     uligs = {}
     prots_ligs = {}
     for lndx,row in enumerate(df_selected.values):
-        print("row[0]=",row[0])
+        #print("row[0]=",row[0])
         pdbs = row[0][0].split(',')
         for pdb in pdbs:
             if pdb == '':
@@ -247,7 +250,8 @@ def split_sdf(file_name,outdir="data/"):
     for key in uligs:
         ndx = str(key)
         lig = uligs[key]
-        write_lig_file(lig[3],outdir+"/lig/lig%s.lig"%ndx)
+        print("writing ligand indexed by ", lig[2], "ndx=",ndx)
+        write_lig_file(lig[2],outdir+"/lig/lig%s.lig"%ndx)
     return uligs, prots_ligs
 
 
@@ -263,10 +267,15 @@ def split_pdb_with_sdf(pdb_id,sdf_file_name,outdir="data/"):
     df = PandasTools.LoadSDF(sdf_file_name,
                              smilesName='SMILES',
                              molColName='Molecule',
-                             includeFingerprints=False)
-    PandasTools.AddMoleculeColumnToFrame(df,'SMILES','PDB ID',includeFingerprints=False)
+                             includeFingerprints=False, 
+                             embedProps=True)
+    print("Available SDF cols = ", [str(x) for x in df.columns])
+    PandasTools.AddMoleculeColumnToFrame(df,'SMILES','Molecule',includeFingerprints=False)
+    df.insert(column="PDB ID", value=pdb_id, loc=0)
     # Select only the needed columns and merge the two PDB cols.
-    df_sdf_list = ['PDB ID','Molecule','FDA drugnames']
+    #df_sdf_list = ['PDB ID','FDA drugnames','SMILES','Molecule']
+    #df_sdf_list = ['PDB ID','Molecule','Ligand','SMILES','BindingDB MonomerID']
+    df_sdf_list = ['PDB ID','BindingDB Ligand Name','ChEMBL ID of Ligand','Molecule']
     df_selected = df[df_sdf_list].copy()
     print("Selected SDF cols = ", [str(x) for x in df_selected.columns])
 
@@ -274,13 +283,19 @@ def split_pdb_with_sdf(pdb_id,sdf_file_name,outdir="data/"):
     #with open(pdb_list_file_name,"r") as csvf:
     #    pdb_list = [ list(line.split(",")) for line in csvf.read().split("\n") ]
     #    df = pd.DataFrame(columns=pdb_list[0].append('Molecule'))
-    for mol in df_selected['Molecule']:
-        print("pdb=",pdb_id, ",Molecule=", mol)
-        df = df.append({'PDB ID':pdb_id}, ignore_index=True)
+    #i=0
+    for name,mol in zip(df['ChEMBL ID of Ligand'],df_selected['Molecule']):
+    #for name,mol in zip(df_selected['BindingDB MonomerID'],df_selected['Molecule']):
+        if ( (mol.GetNumAtoms()<MAX_LIG_ATMS) and ('CHEMBL[0-9]*' in str(name) and not ligname.isspace()) ):
+            print("pdb=",pdb_id, ",Molecule ID = ", name)
+            df_selected = df_selected.append({'PDB ID':pdb_id}, ignore_index=True)
+        #i=i+1
         
-    print("Raw PDB file cols = ", [str(x) for x in df.columns])
+    #print("Raw PDB file cols = ", [str(x) for x in df.columns])
     # Select only the needed columns and merge the two PDB cols.
-    df_selected = df[df_sdf_list].copy()
+    df_selected = df_selected.drop_duplicates()
+    df_selected = df_selected.dropna(inplace=False)
+    #df_selected = df_selected['.*.CHEMBL.*.' in str(df_selected['ChEMBL ID of Ligand'].value)]
     #df_selected["PDB IDs"] = df_selected['PDB ID(s) for Ligand-Target Complex'] + ',' + df_selected['PDB ID(s) of Target Chain']
     print("Selected PDB cols = ", [str(x) for x in df_selected.columns])
     #df_selected = df_selected[ ["PDB IDs"] + df_list[2:] ]
@@ -298,23 +313,58 @@ def split_pdb_with_sdf(pdb_id,sdf_file_name,outdir="data/"):
     uligs = {}
     prots_ligs = {}
     for lndx,row in enumerate(df_selected.values):
-        print("row=",row)
+        print("prot_lig row=",row)
+        ligname=str(row[2]).replace(';','').replace(' ','-').replace('%','').replace('/','').replace('?','').split('\n')[0]
+        ligname = re.sub('[^A-Za-z0-9]+%\/.\\n.', '', ligname)
+        #ligname = str(row[2]).replace('\\','') #.replace(' ','-').replace('%','').replace('/','')
+        #ligname = re.sub('[^A-Za-z0-9]+%\/', '', ligname)
         pdbs = [pdb_id] #row[0].split(',')
         for pdb in pdbs:
             if pdb == '':
                 continue
             if pdb not in prots_ligs:
                 prots_ligs[pdb] = []
-            prots_ligs[pdb] += [ lndx ]
-        uligs[ lndx ] = row
+            if(row[3].GetNumAtoms()<MAX_LIG_ATMS and not (ligname.isspace()) and (row[3].GetNumAtoms()>MIN_LIG_ATMS)):
+                prots_ligs[pdb] += [ lndx ]
+                #prots_ligs[pdb] += [ {str(lndx):ligname} ]
+                MOL_TO_NDX.update({str(lndx):ligname })
+                       
+                uligs[ lndx ] = row
+        
     print("Unique proteins = ", len(prots_ligs))
     print("Writing per-ligand output files.")
     # Write out .lig files and return the data dictionaries.
+    return_uligs = []
+    return_protligs = {}
+    return_protligs[pdb_id] = []
     for key in uligs:
+    #return_uligs = {}
+    #return_protligs = {}
+    #for key in MOL_TO_NDX:
         ndx = str(key)
         lig = uligs[key]
-        write_lig_file(lig[1],outdir+"/lig/lig%s.lig"%ndx)
-    return uligs, prots_ligs
+        #lig = uligs[int(ndx)]
+        #lig = uligs[int(key)]
+        #print("lig=",lig)
+        ligname = str(lig[2]).replace(';','').replace(' ','-').replace('%','').replace('/','').replace('?','').split('\n')[0]
+        ligname = re.sub('[^A-Za-z0-9]+%\/.\\n.', '', ligname)
+        #ligname = str(lig[2])
+        #ligname = str(row[2]).replace('\\n','') #.replace(' ','-').replace('%','').replace('/','')
+        #ligname = re.sub('[^A-Za-z0-9]+%\/', '', ligname)
+
+        #if(lig[1].GetNumAtoms()<MAX_LIG_ATMS and ligname==MOL_TO_NDX[ndx]):
+        if(ligname==MOL_TO_NDX[ndx]):
+            return_uligs.append(lig)
+            return_protligs[pdb_id] += [int(ndx)]
+            print("lig name=",ligname)
+            print("lig # atoms: ", lig[3].GetNumAtoms())
+            print("lig=",lig)
+            print("writing ligand for PDB=:", lig[0], ", #atoms:", lig[3].GetNumAtoms(),", name: ", ligname, "ndx name", MOL_TO_NDX[str(ndx)], ", @ index=", ndx)
+            #write_lig_file(lig[4],outdir+"/lig/lig%s.lig"%ndx)
+            write_lig_file(lig[3],outdir+"/lig/lig%s.lig"%ligname)
+
+    #return uligs, prots_ligs
+    return uligs, return_protligs
 
 
 
@@ -322,7 +372,7 @@ def split_pdb_with_sdf(pdb_id,sdf_file_name,outdir="data/"):
 ############################################################
 
 
-def convert_pdb(pdbid,outdir="data/"):
+def convert_pdb(pdbid,outdir="data/",first_chain_only=True):
     # Print header for each protein and download if needed.
     status = "---------------- %s ----------------\n"%pdbid
     bp_pdbl = PDBList(verbose=False)
@@ -341,24 +391,37 @@ def convert_pdb(pdbid,outdir="data/"):
     # Traverse the PDB structure, looking for the protein chain.
     status += "Models: %d\n"%(len(structure))
     chain_A = []
+    #jb addeded
+    atoms=[]
     for mndx, model in enumerate(structure):
         status += "  models[%d]: %d chains\n"%(mndx,len(model))
         chain = None
-        if 'A' in model:
-            chain = model['A']
-            status += "    Selected chain: 'A'\n"
-        else:
-            for c in model:
-                chain = c
-                break
-            status += "    Selected chain: first ('%s')\n"%(chain.get_id())
-        atoms = []
-        for residue in chain:
-            resid = residue.get_full_id()
-            if resid[3][0] == "W" or (resid[3][0][0] == "H" and resid[3][0][1] == "_"):
-                continue                    
-            for atom in residue:
-                atoms.append( atom )
+        #if 'A' in model:
+        #    chain = model['A']
+        #    status += "    Selected chain: 'A'\n"
+        #else if :
+        for c in model:
+            chain = c
+            if chain.get_id()=='A' or chain.get_id()=='B' or chain.get_id()=='C':
+                #break
+                for residue in chain:
+                    resid = residue.get_full_id()
+                    if resid[3][0] == "W" or (resid[3][0][0] == "H" and resid[3][0][1] == "_"):
+                        continue
+                    for atom in residue:
+                        atoms.append( atom )
+
+                status += "    Selected chain: first ('%s')\n"%(chain.get_id())
+        #jb removed
+        #atoms = []
+        #for residue in chain:
+        #    resid = residue.get_full_id()
+        #    if resid[3][0] == "W" or (resid[3][0][0] == "H" and resid[3][0][1] == "_"):
+        #        continue                    
+        #    for atom in residue:
+        #        atoms.append( atom )
+
+
         chain_A = atoms
         # !!av: For now, just consider the first model.
         break
@@ -469,7 +532,7 @@ if __name__ == "__main__":
     for pdbid in proteins:
         if pdbid not in rejected:
             accepted[pdbid] = proteins[pdbid]
-    stats = write_map_file(ligands,accepted)
+    stats = write_map_file(ligands,accepted,outdir=args.out)
     # Get some stats / distributions.
     bind = 0
     nobind = 0

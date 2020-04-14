@@ -16,14 +16,14 @@ import argparse
 ############################################################
 
 
-def write_map_file(ligands,proteins,outdir="data/"):
-    mapfn = outdir + "/map/dataset.map"
+def write_map_file(ligands,proteins,outdir="data/",map_name="dataset.map"):
+    mapfn = outdir + "/map/" + map_name
     with open(mapfn,"w") as mapf:
         out = ""
         for pdbfn in proteins:
             for ligfn in ligands:
                 # Write two input files, nhg before lig.
-                out += "2 %s %s"%("../nhg/"+str(pdbfn), "../lig/"+str(ligfn))
+                out += "2 %s %s"%("../nhg/"+str(pdbfn)+".nhg", "../lig/"+str(ligfn))
                 # Write one output, the bind state as 0.
                 bind_float = 0.0 
                 out += " 1 %f"%(bind_float)
@@ -45,6 +45,7 @@ if __name__ == "__main__":
     parser.add_argument('--lig_dir', type=str,   required=True,   help='Path to lig dir.')
     parser.add_argument('--pdbs',    type=str,   required=True,   help='List of PDB IDs.')
     parser.add_argument('--out',     type=str,   default="data",  help='Output directory.')
+    parser.add_argument('--map_name',type=str,   default="dataset.map",  help='Name of resulting map file.')
     args = parser.parse_args()
     # Create any needed subdirectories in advance.
     for subdir in ("map",):
@@ -65,7 +66,7 @@ if __name__ == "__main__":
         print("  [...]")
     # Write the new map file.
     print("Writing map file:")
-    write_map_file(ligands,pdbs,args.out)
+    write_map_file(ligands,pdbs,args.out,args.map_name)
     # Done.
     print("Success!")
     

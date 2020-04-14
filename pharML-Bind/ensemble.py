@@ -92,7 +92,6 @@ def ensemble_maps(maps):
     print("  count*: %d  (100.0%%)"%(len(maps[0])))
     return
 
-
 ############################################################
 
 
@@ -100,6 +99,7 @@ def parse_args():
     # Parse command line args.
     parser = argparse.ArgumentParser(prog='ensemble.py: Combine inference outputs into an ensemble.', description='Combine inference outputs into an ensemble.')
     parser.add_argument('--maps', type=str, required=True, help='Colon-seperated list of .map file paths.')
+    parser.add_argument('--out', type=str, required=True, help='File to save the lig IDs (CHEMBL).')
     args = parser.parse_args()
     print(args)
     # Return parsed args.

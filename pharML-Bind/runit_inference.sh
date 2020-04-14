@@ -1,30 +1,18 @@
 #!/bin/bash
-#SBATCH -N 1
+#SBATCH -N 8
 ####SBATCH -C "V100|V10032GB|V10016GB"
-#SBATCH -C V10032GB
-#SBATCH --mem=0
-#SBATCH --ntasks-per-node=8
+#SBATCH -C V100
+#####SBATCH --mem=0
+####SBATCH --ntasks-per-node=8
 #SBATCH -p spider
 #SBATCH --exclude=spider-0012,spider-0013,spider-0002
-####SBATCH -w spider-0013
 #SBATCH --exclusive
-##SBATCH -e stderr.out
-##SBATCH -o stdout.out
-#SBATCH --job-name=resnet
-#SBATCH -t 48:00:00
-####SBATCH -t 1:00:00
+#SBATCH --job-name=pharml-bind
+#SBATCH -t 4:00:00
 
-#source ./setup_env_cuda10.sh
-#unset PYTHONPATH
-
-#source ./setup_env_cuda10_covi19.sh
 source ./config_cuda10.sh
 unset PYTHONPATH
 module rm PrgEnv-cray
-#source activate ${INSTALL_DIR}
-#MLD_RDK_ENV_INSTALL_DIR=~/cuda10_env
-#source activate $MLD_RDK_ENV_INSTALL_DIR
-#source activate /home/users/jbalma/cuda10_env_nccl
 
 INSTALL_DIR=/lus/scratch/jbalma/condenv-cuda10-pharml
 
@@ -42,7 +30,7 @@ which python
 
 #conda install cmake
 #conda install pip
-pip uninstall horovod
+#pip uninstall horovod
 export CMAKE_CXX_COMPILER=$MPI_CXX
 export CMAKE_CC_COMPILER=$MPI_CC
 export HOROVOD_ALLOW_MIXED_GPU_IMPL=0
@@ -51,30 +39,30 @@ export HOROVOD_ALLOW_MIXED_GPU_IMPL=0
 
 HOROVOD_BUILD_ARCH_FLAGS="-mavx256" HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITHOUT_PYTORCH=1 HOROVOD_WITHOUT_MXNET=1 pip install --no-cache-dir horovod
 #exit
+conda list
 
 export SCRATCH=/lus/scratch/jbalma
 export CRAY_CUDA_MPS=1
 export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
-export TF_ENABLE_AUTO_MIXED_PRECISION=1
+#export TF_ENABLE_AUTO_MIXED_PRECISION=1
 #export CRAY_CUDA_PROXY=1
 echo "Running..."
 #export CRAY_CUDA_MPS=1
-export TF_FP16_CONV_USE_FP32_COMPUTE=0
-export TF_FP16_MATMUL_USE_FP32_COMPUTE=0
+#export TF_FP16_CONV_USE_FP32_COMPUTE=0
+#export TF_FP16_MATMUL_USE_FP32_COMPUTE=0
 #export HOROVOD_TIMELINE=${SCRATCH_PAD}/timeline.json
 #export HOROVOD_FUSION_THRESHOLD=256000000
 #export HOROVOD_FUSION_THRESHOLD=500000
-#export HOROVOD_FUSION_THRESHOLD=0
+export HOROVOD_FUSION_THRESHOLD=0
 #export HOROVOD_MPI_THREADS_DISABLE=1
 #export HOROVOD_FUSION_THRESHOLD=0
 
+
 d="$(date +%Y)-$(date +%h%m-%s)"
 
-#ENSEMBLE_MODELS=/lus/scratch/jbalma//results_${d}/trained_models
-#ENSEMBLE_MODELS=/lus/scratch/jbalma/temp/results_monolithic3/train/monolithic3-mldock-train-bindingdb_2019m4_25-test_bindingdb_2019m4_1of75pct-np-64-lr0.00000001-5,5-layer-32,32x2,2-bs_8-epochs-963-nf-16,16_resumedfrom90/
 ENSEMBLE_MODELS=./pretrained-models/mh-gnnx5-ensemble
-ENSEMBLE_OUTPUT=./results/covid19_${d}/inference
-ENSEMBLE_RAW=./results/covid19_${d}/raw_raw_results
+ENSEMBLE_OUTPUT=./results/covid19_6vsb/inference
+ENSEMBLE_RAW=./results/covid19_6vsb/raw_results
 mkdir -p $ENSEMBLE_OUTPUT
 mkdir -p $ENSEMBLE_RAW
 
@@ -83,9 +71,21 @@ echo " -> Model files: ${ENSEMBLE_MODELS}"
 echo " -> Inference Output Values: ${ENSEMBLE_OUTPUT}"
 echo " -> Raw Run Results: ${ENSEMBLE_RAW}"
 
-list_of_files="6vsb-bindingdb"
+##list_of_files="6vsb-full-bindingdb-fda"
 #list_of_files="6vsb-fda"
+#list_of_files="6vsb-bindingdb"
+list_of_files="l0_1pct_train"  
+#list_of_files="dataset"
+#pdb_3bcu_nobind.map
+#00:42:36 jbalma@osprey:/lus/scratch/jbalma/avose_backup/data/map
 
+
+echo "Starting COVID-19 Structure Inference for all structure files (${list_of_files}) for all ensemble members."
+echo "========================================================================================"
+echo "--> 6LZG: Spike receptor-binding domain complexed with its receptor ACE2: https://www.rcsb.org/structure/6LZG"
+echo "--> 6VSB: Prefusion 2019-nCoV spike glycoprotein with a single receptor-binding domain up: https://www.rcsb.org/structure/6vsb"
+echo "--> 6LU7: The crystal structure of COVID-19 main protease in complex with an inhibitor N3: https://www.rcsb.org/structure/6LU7"
+echo "--> Starting at: $(date)"
 
 #Loop over the PDB IDs of interest
 for f in $list_of_files
@@ -93,14 +93,21 @@ do
   #Loop over each model of the ensemble
   for n in 0 1 2 3 4
   do
-    MAP_TRAIN_NAME="6vsb-fda"
-    MAP_TEST_NAME=$f
-    
+    MAP_TRAIN_NAME=$f
+    MAP_TEST_NAME=dataset
+    MAP_TRAIN_PATH=/lus/scratch/jbalma/DataSets/Binding/bindingdb_2019m4/data/map/${MAP_TRAIN_NAME}.map
+    MAP_TEST_PATH=/lus/scratch/jbalma/DataSets/Binding/bindingdb_2019m4/data/map/${MAP_TEST_NAME}.map
     #MAP_TRAIN_PATH=/lus/scratch/jbalma/avose_backup/data/map/${MAP_TRAIN_NAME}.map
+    #MAP_TRAIN_PATH=/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/
+    
     #MAP_TEST_PATH=/lus/scratch/jbalma/avose_backup/data/map/${MAP_TEST_NAME}.map
-    MAP_TRAIN_PATH=/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/${MAP_TRAIN_NAME}.map
-    MAP_TEST_PATH=/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/${MAP_TEST_NAME}.map
-
+    #MAP_TRAIN_PATH=/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/${MAP_TRAIN_NAME}.map
+    #MAP_TEST_PATH=/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19/data/map/${MAP_TEST_NAME}.map
+    #MAP_TEST_PATH=/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19-fda-bindingdb/data-6vsb-bindingdb-fda-all/map/${MAP_TEST_NAME}.map
+    
+    #MAP_TEST_PATH=/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19-fda-bindingdb/data-6vsb-bindingdb/map/${MAP_TEST_NAME}.map
+    #MAP_TEST_PATH=/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19-fda-bindingdb/data-6vsb-bindingdb-full/map/${MAP_TEST_NAME}.map
+    #MAP_TEST_PATH=/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19-fda-bindingdb/data-6vsb-bindingdb-fda/map/${MAP_TEST_NAME}.map
     echo "Model number = ${n}"
     echo "Running with training input data ${MAP_TRAIN_PATH}"
     echo "test data from: ${MAP_TEST_PATH}"
@@ -115,15 +122,16 @@ do
     #export UCX_ACC_DEVICES=""
     #export UCX_NET_DEVICES="eth0,mlx5_0:1" #,ib0,eth0"   #mlx5_0:1,mlx5_1:1,mlx5_2:1,mlx5_3:1
     #export DL_COMM_USE_CRCCL=1
-
+    export OMPI_MCA_btl_tcp_if_include=ib0
+    #-mca btl_tcp_if_include ens4d1
     NODES=1 #nodes total
     PPN=8 #processer per node
     PPS=4 #processes per socket
     NP=8 #processes total
-    NC=4  #job threads per rank
+    NC=9  #job threads per rank
     NT=4  #batching threads per worker
-    BS=16 #batch size per rank
-    BS_TEST=16 #inference batch size
+    BS=8 #batch size per rank
+    BS_TEST=8 #inference batch size
     #LR0=0.000001 #for BS=2,4,6
     LR0=0.000000001
     MLP_LATENT=32,32
@@ -133,27 +141,21 @@ do
     MODE=classification
     EPOCHS=1
 
-    INFER_OUT="${MAP_TEST_NAME}_inference.map"
+    INFER_OUT="model${n}_${MAP_TEST_NAME}_inference.map"
     
-    TEMP_DIR=${SCRATCH}/temp/pharml-covid-${MAP_TEST_NAME}-np-${NP}-lr${LR0}-${GNN_LAYERS}-bs${BS_TEST}
-    rm -rf $TEMP_DIR
+    TEMP_DIR=${SCRATCH}/temp/pharml-bind-covid-${MAP_TEST_NAME}-np-${NP}-lr${LR0}-bs${BS_TEST}-fda-all
+    #rm -rf $TEMP_DIR
     mkdir -p ${TEMP_DIR}
     cp -r /cray/css/users/jbalma/Innovation-Proposals/mldock/mldock-gnn/* ${TEMP_DIR}/
     cd ${TEMP_DIR}
     export SLURM_WORKING_DIR=${TEMP_DIR}
 
-    echo "Starting COVID-19 Structure Inference: 6VSB, 6LZG, 6LU7 for ensemble member ${n}..."
-    echo "========================================================================================"
-    echo "--> 6LZG: Spike receptor-binding domain complexed with its receptor ACE2: https://www.rcsb.org/structure/6LZG"
-    echo "--> 6VSB: Prefusion 2019-nCoV spike glycoprotein with a single receptor-binding domain up: https://www.rcsb.org/structure/6vsb"
-    echo "--> 6LU7: The crystal structure of COVID-19 main protease in complex with an inhibitor N3: https://www.rcsb.org/structure/6LU7"
-    echo "--> Starting at: $(date)"
 
     #Start CUDA MPS Server for Dense GPU nodes
-    time srun --cpu_bind=none -p spider -C V100 -l -N ${NODES} --ntasks-per-node=1 -u ./restart_mps.sh 2>&1 |& tee mps_result.txt
-
+    #time srun --cpu_bind=none -p spider -C V100 -l -N ${NODES} --ntasks-per-node=1 -n ${NODES} -u ./restart_mps.sh 2>&1 |& tee mps_result.txt
+    
     #Start the inference run on a single model
-    time srun -c ${NC} --hint=multithread --cpu_bind=none -C V100 -p spider -l -N ${NODES} -n ${NP} --ntasks-per-node=${PPN} --ntasks-per-socket=${PPS} -u --cpu_bind=none python mldock_gnn.py \
+    time srun -c ${NC} --hint=multithread --cpu_bind=none -C V100 -p spider -l -N ${NODES} -n ${NP} --ntasks-per-node=${PPN} --ntasks-per-socket=${PPS} -u --cpu_bind=rank_ldom python mldock_gnn.py \
         --map_train ${MAP_TRAIN_PATH} \
         --map_test ${MAP_TEST_PATH} \
         --batch_size ${BS} \
@@ -171,20 +173,19 @@ do
         --epochs 1 2>&1 |& tee log-covid19-${MAP_TEST_NAME}-model-${n}.out
 
     #create a new directory to store the inference output in
-    mkdir -p ${ENSEMBLE_OUTPUT}/model_${n}/${MAP_TEST_NAME}_inference_output
+    mkdir -p ${ENSEMBLE_OUTPUT}/model_${n}/${MAP_TEST_NAME}
+    mkdir -p ${ENSEMBLE_RAW}/model_${n}/${MAP_TEST_NAME}
     #copy the raw per-worker inference data to the new directory
-    cp ./${MAP_TEST_NAME}_inference*.map ${ENSEMBLE_OUTPUT}/model_${n}/${MAP_TEST_NAME}_inference_output/
+    cp -v ./model${n}_${MAP_TEST_NAME}_inference*.map ${ENSEMBLE_OUTPUT}/model_${n}/${MAP_TEST_NAME}/
     #concat the per-worker inference data into a single file
-    cat ./${MAP_TEST_NAME}_inference*.map > ${ENSEMBLE_OUTPUT}/model_${n}/${MAP_TEST_NAME}_inference_model${n}.map
-    cp ${TEMP_DIR}/log-covid19-${MAP_TEST_NAME}-model-${n}.out ${ENSEMBLE_RAW}/model_${n}/
+    cat ${ENSEMBLE_OUTPUT}/model_${n}/${MAP_TEST_NAME}/model${n}_${MAP_TEST_NAME}_inference*.map > ${ENSEMBLE_OUTPUT}/model_${n}/combined_predictions_${MAP_TEST_NAME}_inference_model${n}.map
+    cp -v ${TEMP_DIR}/log-covid19-${MAP_TEST_NAME}-model-${n}.out ${ENSEMBLE_RAW}/model_${n}/${MAP_TEST_NAME}/
     sleep 10
     
     echo "done inferencing ${MAP_TEST_NAME} dataset with ensemble model ${n}."
-    echo "saved ${MAP_TEST_NAME} inference output to ${ENSEMBLE_OUTPUT}/model_${n}/${MAP_TEST_NAME}_inference_model${n}.map..."
-    echo "saved raw run data to ${ENSEMBLE_RAW}/model_${n}/log-covid19-${MAP_TEST_NAME}-model-${n}.out..."
 
   done
-  echo "Done with inference tests across ensemble for ${MAP_TEST_NAME}. Moving on to next PDB Structure"
+  echo "Done with ALL ensemble inference tests for ${MAP_TEST_NAME}. Moving on to next PDB Structure"
 done
 echo "Done testing all compounds against all models."
 wait
