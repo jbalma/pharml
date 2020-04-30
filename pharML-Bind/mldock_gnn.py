@@ -1,12 +1,36 @@
 #!/usr/bin/env python
-############################################################
+"""
+Copyright 2020 Hewlett Packard Enterprise Development LP and
+MUSC foundation for Research Development
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
+
+#############################################################################
+# The following description is based on Deep Mind's Encoder-Core-Decoder GNN
+# The MH-GNN model we explore includes four components:
 #
-# The model we explore includes three components:
+# - An "Encoder" graph net, which independently encodes the Molecular graph's 
+#   edge, node, and global attributes.
 #
-# - An "Encoder" graph net, which independently encodes the edge, node, and
-#   global attributes (does not compute relations etc.).
-#
-# - A "Core" graph net, which performs N rounds of processing (message-passing)
+# - An expanding Highway "Core" graph net, which performs N
 #   steps. The input to the Core is the concatenation of the Encoder's output
 #   and the outputs of the previous Cores (labeled "Hidden({i:i<t})" below, 
 #   where "t" is the processing step).
@@ -14,16 +38,18 @@
 # - A "Decoder" graph net, which independently decodes the edge, node, and
 #   global attributes (does not compute relations etc.) of the last of the
 #   message-passing steps.
+# - A "Classification" layer, which is fully-connected (FC) and connects to 
+#   the final bind and no-bind class neurons
 #
 #                 Hidden({i:i<t})  Hidden(t)
-#                        |            ^
-#           *---------*  |  *------*  |  *---------*
-#           |         |  |  |      |  |  |         |
-# Input --->| Encoder |  *->| Core |--*->| Decoder |---> Output
-#           |         |---->|      |     |         |
-#           *---------*     *------*     *---------*
-#
-############################################################
+#                        |            ^                  |     |
+#           *---------*  |  *---------*  |  *---------*  |     |
+#           |         |  |  |         |  |  |         |  |     |   |-> NO-BIND
+# Input --->| Encoder |  *->| MH-Core |--*->| Decoder |--|  FC | ->|
+#           |         |---->|   xN    |     |         |  |     |   |-> BIND
+#           *---------*     *---------*     *---------*  |     |
+#                                                        |     |
+##############################################################################
 
 
 from __future__ import absolute_import

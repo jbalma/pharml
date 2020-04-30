@@ -41,6 +41,7 @@ def ensemble_maps(maps):
     # Do a sanity-check on item0.
     for m in maps:
         first_item = m[0] #[inputs, outputs, tags]
+        print("first item = ", first_item)
         if len(first_item[0]) != 2:
             print("Expected two inputs (NHG and LIG)!")
             sys.exit(1)
@@ -48,8 +49,11 @@ def ensemble_maps(maps):
             print("Expected one output (bind/nobind)!")
             sys.exit(1)
         if len(first_item[2]) != 2:
-            print("Expected two tags (actual and prediction)!")
+            print("Expected 2 tags (actual, prediction)")
             sys.exit(1)
+        #if len(first_item[3]) !=2: 
+        #    print("Expected 2 probabilities for no-bind and bind!")
+        #    sys.exit(1)
     # Bin all items for each map by (p,l) pair.
     dmaps = [ {} for m in maps ]
     for mndx,m in enumerate(maps):
@@ -69,17 +73,28 @@ def ensemble_maps(maps):
     for key in dmaps[0]:
         actual = 1.0 if float(dmaps[0][key][0][0]) == 1.0 else 0.0
         binds = 0
+        out = [0.0,0.0]
         for dmap in dmaps:
             outputs, tags = dmap[key]
-            prediction = 1.0 if "pred:1" in tags else 0.0
+            raw_out = []
+            for t in tags:
+                raw_out.append(t.strip("nb:").strip("b:").strip(","))
+            fp_out = [0.0,0.0]
+            fp_out[0] = float(raw_out[0])
+            fp_out[1] = float(raw_out[1])
+            #print("raw outs=", raw_out, ", fp_out=",fp_out)
+            prediction = float(np.argmax(fp_out))
+            #prediction = 1.0 if "pred:1" in tags else 0.0
             if prediction == 1.0:
                 binds += 1
-        ensemble[key] = (key, actual, binds)
+                out[0] += fp_out[0]
+                out[1] += fp_out[1]
+        ensemble[key] = (key, actual, binds, out)
     # Get some totals / global stats.
     total_binds = 0
     total_nobinds = 0
     for key in ensemble:
-        k, actual, binds = ensemble[key]
+        k, actual, binds, out = ensemble[key]
         if actual == 1.0:
             total_binds += 1
         else:
@@ -88,8 +103,30 @@ def ensemble_maps(maps):
     # Build a dict based on bind prediction counts.
     counts = { i:[] for i in reversed(range(len(dmaps)+1)) }
     for item in sorted(ensemble.values(), key=lambda e: e[2]):
-        key, actual, binds = item
+        key, actual, binds, out = item
+        #print("working on building dict for key=",key)
+        #print(" -> has raw out = ", out)
         counts[binds].append(item)
+
+    top_counts = { i:[] for i in reversed(range(len(dmaps)+1)) }
+    for item in sorted(counts[4], key=lambda e: e[3][1]):
+        #print("item = ", item)
+        key, actual, binds, out = item
+        #print("working on sorting dict for key=",key)
+        #print(" -> has raw out = ", out)
+        #print(" -> and binds = ", binds)
+        top_counts[binds].append(item)
+
+    f= open("top-preds.txt","w+")
+    for item in reversed(sorted(counts[5], key=lambda e: e[3][1])):
+        key, actual, binds, out = item
+        cid = key[1].strip("lig").strip("\.").strip("\/") #key[1].split(".lig")[0].split(".*.lig")[1].strip(" ")
+        cid = cid.split('lig')[-1]
+        #print("top cid=", cid)
+        print("%s %s %s %s"%(cid,binds,out[0],out[1]))
+        f.write("%s %s %s %s \n"%(cid,binds,out[0],out[1]))
+    f.close()
+
     # Print ensemble info for each prediction count.
     cum_cbinds = 0
     cum_ncount = 0
@@ -98,7 +135,7 @@ def ensemble_maps(maps):
         ncpct = 100.0 * ncount / len(maps[0])
         cbinds = 0
         for item in counts[count]:
-            key, actual, binds = item
+            key, actual, binds, out = item
             if actual == 1.0:
                 cbinds += 1
         bpct = 100.0 * cbinds / ncount

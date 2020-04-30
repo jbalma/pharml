@@ -1,5 +1,5 @@
 # PharML
-PharML is a framework for predicting compound affinity for protein structures. It utilizes a novel Molecular-Highway Graph Neural Network (MH-GNN) architecture based on state-of-the-art techniques in deep learning. This repository contains the visualization, preprocessing, training, and inference code written in Python and C. In addition, we provide an ensemble of pre-trained models which can readily be used for quickly generating rank-ordered predictions of compound affinity relative to a given target. 
+PharML is a framework for predicting compound affinity for protein structures. It utilizes a novel Molecular-Highway Graph Neural Network (MH-GNN) architecture based on state-of-the-art techniques in deep learning. This repository contains the visualization, preprocessing, training, and inference code written in Python and C. In addition, we provide an ensemble of pre-trained models which can readily be used for quickly generating rank-ordered predictions of compound affinity relative to a given target. DISCLAIMER: Compounds predicted by PharML.Bind should not be used without consulting a doctor or pharmacist - all results should be considered unverified and used only as a starting point for further investigation. Use at your own risk!
 
 Setup
 ==============================
@@ -96,11 +96,59 @@ Running
         "========================================================================================"
         "--> 6LZG: Spike receptor-binding domain complexed with its receptor ACE2: https://www.rcsb.org/structure/6LZG"
         "--> 6VSB: Prefusion 2019-nCoV spike glycoprotein with a single receptor-binding domain up: https://www.rcsb.org/structure/6vsb"
-        "--> 6LU7: The crystal structure of COVID-19 main protease in complex with an inhibitor N3: https://www.rcsb.org/structure/6LU7"
         "--> Starting at: 4/3/2020 12:00:00 PM CST"
 
  
-        "[TODO: Fill in the remaining example output]"
+    -> Next, you will see PharML.Bind initialize and tensorflow will print some logging info
+
+        0: WARNING:tensorflow:From mldock_gnn.py:57: The name tf.set_random_seed is deprecated. Please use tf.compat.v1.set_random_seed instead.
+        0: Initialization of horovod complete...
+        0: Rank 0  is saving inference output to model0_dataset_inference_0.map
+        0: ----------------------------------------
+        0: PharML.Bind-GNN: Version 1.0.1 - Framework for Open Therapeutics with Graph Neural Networks.
+        0: ----------------------------------------
+        0: ============================================================================================
+        0: ----------------------------------------
+        0:   Developed by
+        0: ----------------------------------------
+        0: ----------------------------------------
+        0:       Jacob Balma: jb.mt19937@gmail.com
+        0: ----------------------------------------
+        0: ----------------------------------------
+        0:       Aaron Vose:  avose@aaronvose.net
+        0: ----------------------------------------
+        0: ----------------------------------------
+        0:       Yuri Petersen: yuripeterson@gmail.com
+        0: ----------------------------------------
+        0: 
+        0: ----------------------------------------
+        0: This work is supported by collaboration with Cray, Inc, Medical University of South Carolina (MUSC) and Hewlett Packard Enterprise (HPE). 
+        0: ----------------------------------------
+        0: ----------------------------------------
+        0: ============================================================================================
+        0: ----------------------------------------
+        0: Namespace(batch_size=2, batch_size_test=2, data_threads=4, debug=True, epochs=1, gnn_layers='5,5', hvd=True, inference_only=True, inference_out='model0_dataset_inference.map', lr_init=0.01, map_test='/lus/scratch/jbalma/DataSets/Binding/mldock/tools/covid19-fda-bindingdb/data-6vsb-bindingdb-fda/map/dataset.map', map_train='/lus/scratch/jbalma/avose_backup/data/map/l0_1pct_train.map', mlp_latent='32,32', mlp_layers='2,2', mode='classification', num_features='16,16', plot_history=False, restore='./pretrained-models/mh-gnnx5-ensemble/model_0/checkpoints/model0.ckpt', use_clr=False, use_fp16=False)
+        0: ----------------------------------------
+        0: Loading data.
+        0: ----------------------------------------
+        0: Loading map file as distributed dataset for 8 ranks:
+        0:   Map file:          /lus/scratch/jbalma/data/6vsb-bindingdb-fda/map/l0_1pct_train.map
+        0:   Map items:         23608
+        0:   Worker chunk size: 2951
+        0:   Number of items:   2951
+        0:   Sum(target[0]):    1422.000000
+        0:   Avg(target[0]):    0.481871
+        0:   Total load time:   0.4
+        0: Done processing map file.
+        0: Loading map file as distributed dataset for 8 ranks:
+        0:   Map file:          /lus/scratch/jbalma/data/6vsb-bindingdb-fda/map/dataset.map
+        0:   Map items:         440
+        0:   Worker chunk size: 55
+        0:   Number of items:   55
+        0:   Sum(target[0]):    55.000000
+        0:   Avg(target[0]):    1.000000
+        0:   Total load time:   0.0
+        0: Done processing map file.
 
     -> When inference finishes over all ensemble members, you will find the results stored to disk (if --inference_out was set) in the pharml/results/${MAP_TEST_NAME} directory
 
