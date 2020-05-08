@@ -1,36 +1,12 @@
 #!/usr/bin/env python
-"""
-Copyright 2020 Hewlett Packard Enterprise Development LP and
-MUSC foundation for Research Development
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the "Software"),
-to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-USE OR OTHER DEALINGS IN THE SOFTWARE.
-"""
-
-#############################################################################
-# The following description is based on Deep Mind's Encoder-Core-Decoder GNN
-# The MH-GNN model we explore includes four components:
+############################################################
 #
-# - An "Encoder" graph net, which independently encodes the Molecular graph's 
-#   edge, node, and global attributes.
+# The model we explore includes three components:
 #
-# - An expanding Highway "Core" graph net, which performs N
+# - An "Encoder" graph net, which independently encodes the edge, node, and
+#   global attributes (does not compute relations etc.).
+#
+# - A "Core" graph net, which performs N rounds of processing (message-passing)
 #   steps. The input to the Core is the concatenation of the Encoder's output
 #   and the outputs of the previous Cores (labeled "Hidden({i:i<t})" below, 
 #   where "t" is the processing step).
@@ -38,18 +14,16 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 # - A "Decoder" graph net, which independently decodes the edge, node, and
 #   global attributes (does not compute relations etc.) of the last of the
 #   message-passing steps.
-# - A "Classification" layer, which is fully-connected (FC) and connects to 
-#   the final bind and no-bind class neurons
 #
 #                 Hidden({i:i<t})  Hidden(t)
-#                        |            ^                  |     |
-#           *---------*  |  *---------*  |  *---------*  |     |
-#           |         |  |  |         |  |  |         |  |     |   |-> NO-BIND
-# Input --->| Encoder |  *->| MH-Core |--*->| Decoder |--|  FC | ->|
-#           |         |---->|   xN    |     |         |  |     |   |-> BIND
-#           *---------*     *---------*     *---------*  |     |
-#                                                        |     |
-##############################################################################
+#                        |            ^
+#           *---------*  |  *------*  |  *---------*
+#           |         |  |  |      |  |  |         |
+# Input --->| Encoder |  *->| Core |--*->| Decoder |---> Output
+#           |         |---->|      |     |         |
+#           *---------*     *------*     *---------*
+#
+############################################################
 
 
 from __future__ import absolute_import
@@ -92,7 +66,7 @@ RANK = 0
 RANKS = 1
 BATCH_SIZE=1
 BATCH_SIZE_TEST=1
-PRINT_EVERY = 10
+PRINT_EVERY = 1
 ############################################################
 
 
@@ -151,7 +125,9 @@ def compute_accuracy_reg(target, output):
         solved.append(np.abs(td["globals"][0] - od[0]))
     return sum(solved), len(solved)
 
-
+def softmax(x):
+    exp = np.exp(x) # exp just calculates exp for all elements in the matrix
+    return exp / exp.sum(axis=0) # sum axis = 0 argument sums over axis representing columns
 
 def write_predictions(items,outputs):
     # Skip if no output file.
@@ -169,8 +145,13 @@ def write_predictions(items,outputs):
         nhg_fn = "../nhg/" + os.path.basename(nhg_fn)
         lig_fn = "../lig/" + os.path.basename(lig_fn)
         target = np.argmax(target)
-        tag = "bind" if target == 1 else "nobind"
-        pred = "pred:%d"%(np.argmax(out))
+        #out[0]=prob of no-bind, out[1]=prob of bind
+        #tag = "bind" if target == 1 else "nobind"
+        #nb_prob = "nb: %.2f"%(out[0])
+        #b_prob = "b: %.2f"%(out[1])
+        sm_out = softmax(out)
+        tag = "nb:%.6f"%(sm_out[0]) + ", b:%.6f"%(sm_out[1])
+        pred = "pred:%d"%(np.argmax(sm_out))
         write_predictions.of.write("2 %s %s 1 %f 2 %s %s\n"%(nhg_fn,lig_fn,target,tag,pred))
     # Flush.
     write_predictions.of.flush()
